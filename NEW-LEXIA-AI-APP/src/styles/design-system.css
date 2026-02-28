@@ -1,0 +1,1180 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   LEXIA 2026 · DESIGN SYSTEM
+   Shared variables, layout, and components extracted from P1–P8.
+
+   Accent : Google Blue #1967D2
+   Fonts  : Playfair Display · IBM Plex Sans · IBM Plex Mono
+   Shadows: Blue-tinted — never grey
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── GOOGLE FONTS ───────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+/* ── CSS CUSTOM PROPERTIES ──────────────────────────────────────────────── */
+:root {
+  /* ── Warna Primer ─────────────────────── */
+  --bl:       #1967D2;              /* Primary: Google Blue */
+  --bl-dk:    #1251AA;              /* Darker for hover */
+  --bl-lt:    #4A8EE8;              /* Lighter accent */
+  --bl-dim:   rgba(25,103,210,.06); /* Subtle bg tint */
+  --bl-dim2:  rgba(25,103,210,.11); /* Stronger bg tint */
+  --bl-bd:    rgba(25,103,210,.15); /* Border */
+  --bl-bd2:   rgba(25,103,210,.25); /* Strong border */
+  --bl-glow:  rgba(25,103,210,.22); /* Shadow glow */
+  --bl-grad:  linear-gradient(135deg, #1967D2 0%, #2B80E8 100%);
+  --bl-grad2: linear-gradient(135deg, #1251AA 0%, #1967D2 100%);
+
+
+  /* ── Background & Surface ──────────────── */
+  --bg:       #EDF2F8;  /* Page background */
+  --bg2:      #E3EBF4;  /* Deeper bg (toggle, chip row) */
+  --surface:  #FFFFFF;  /* Cards, sidebar */
+  --surface2: #F6F9FC;  /* Subtler surface */
+
+
+  /* ── Border ────────────────────────────── */
+  --bd:     rgba(25,103,210,.09);  /* Subtle blue-tinted */
+  --bd2:    rgba(25,103,210,.16);  /* More visible */
+  --bd-n:   rgba(15,35,80,.07);    /* Neutral border */
+  --bd-n2:  rgba(15,35,80,.11);    /* Strong neutral */
+
+
+  /* ── Text ──────────────────────────────── */
+  --t1: #07152A;  /* Primary (navy dark) */
+  --t2: #233450;  /* Secondary */
+  --t3: #526280;  /* Tertiary / muted */
+  --t4: #8BA3BE;  /* Placeholder / disabled */
+  --t5: #C8D8E8;  /* Nav labels, dividers */
+
+
+  /* ── Status ────────────────────────────── */
+  --gr:     #0D7A4E; --gr-dim: rgba(13,122,78,.08);
+  --am:     #C97000; --am-dim: rgba(201,112,0,.08);
+  --re:     #C0392B; --re-dim: rgba(192,57,43,.07);
+
+
+  /* ── Shadows ───────────────────────────── */
+  --sh-sm:   0 2px 6px rgba(25,103,210,.07), 0 1px 2px rgba(15,35,80,.04);
+  --sh-md:   0 4px 14px rgba(25,103,210,.09), 0 6px 24px rgba(15,35,80,.04);
+  --sh-chat: 0 -4px 20px rgba(25,103,210,.10), 0 -1px 4px rgba(15,35,80,.05);
+
+
+  /* ── Layout ────────────────────────────── */
+  --sb:   228px;   /* Sidebar width */
+  --r:    11px;    /* Border radius card */
+  --r-sm: 7px;     /* Border radius small */
+  --pill: 999px;   /* Pill/capsule */
+
+
+  /* ── Typography ────────────────────────── */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'JetBrains Mono', monospace;
+}
+
+/* ── CSS RESET ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── BODY: flex container horizontal ─────────────── */
+html, body {
+  height: 100%;
+  overflow: hidden;  /* Scroll dikelola oleh panel masing-masing */
+}
+body {
+  display: flex;  /* KRITIS — sidebar & main berdampingan */
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--t1);
+}
+
+#app-root {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── AMBIENT ORBS ───────────────────────────────────────────────────────── */
+.mesh-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+}
+.orb-1 {
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(
+    circle,
+    rgba(25, 103, 210, 0.13) 0%,
+    transparent 65%
+  );
+  top: -220px;
+  left: -130px;
+  filter: blur(70px);
+  animation: orb1 22s ease-in-out infinite alternate;
+}
+.orb-2 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(
+    circle,
+    rgba(74, 142, 232, 0.09) 0%,
+    transparent 65%
+  );
+  top: 60px;
+  right: -100px;
+  filter: blur(80px);
+  animation: orb2 27s ease-in-out infinite alternate;
+}
+.orb-3 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(
+    circle,
+    rgba(2, 120, 190, 0.08) 0%,
+    transparent 65%
+  );
+  bottom: -100px;
+  left: 40%;
+  filter: blur(70px);
+  animation: orb3 19s ease-in-out infinite alternate;
+}
+@keyframes orb1 {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(80px, 65px);
+  }
+}
+@keyframes orb2 {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-65px, 80px);
+  }
+}
+@keyframes orb3 {
+  from {
+    transform: translate(0, 0) scale(0.93);
+  }
+  to {
+    transform: translate(-45px, -60px) scale(1.07);
+  }
+}
+/*
+ * ════════════════════════════════════════════════════════════
+ *  SIDEBAR — Expected HTML Structure
+ * ════════════════════════════════════════════════════════════
+ *
+ *  <aside class="sidebar">
+ *    <!-- Shimmer top edge (blue gradient garis atas) -->
+ *    <!-- .sidebar::before { height:3px; background:var(--bl-grad) } -->
+ *
+ *    <!-- Header: logo inline base64 + collapse button -->
+ *    <div class="sb-head">
+ *      <img class="sb-logo" src="[BASE64_PNG]" alt="Lexia"
+ *           style="height:28px"/>
+ *      <button class="icon-btn">...</button>
+ *    </div>
+ *
+ *    <!-- User profile pill -->
+ *    <div class="sb-user">
+ *      <div class="sb-av">AS</div>  <!-- Avatar initial -->
+ *      <div class="sb-name">Ahmad Santoso</div>
+ *      <div class="sb-role">Divisi Hukum · PLN</div>
+ *    </div>
+ *
+ *    <!-- Navigation (3 kelompok: Workspace / AI Tools / Admin) -->
+ *    <nav class="sb-nav">
+ *      <div class="nav-lbl">Workspace</div>
+ *      <div class="nav-item active"> Dasbor </div>
+ *      <div class="nav-item"> Drafting Dokumen </div>
+ *      ...8 item total...
+ *    </nav>
+ *
+ *    <!-- Footer: Mode Benteng toggle + Keluar -->
+ *    <div class="sb-footer">
+ *      <div class="bt-row">
+ *        <span>Mode Benteng</span>
+ *        <div class="toggle"></div>
+ *      </div>
+ *    </div>
+ *  </aside>
+ */
+
+/* ── SIDEBAR: lebar tetap 228px ─────────────────── */
+.sidebar {
+  width: var(--sb);  /* 228px */
+  flex-shrink: 0;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--bd-n);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 20px rgba(25,103,210,.07);
+}
+.sidebar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--bl-grad);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sidebar — Head */
+.sb-head {
+  height: 66px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bd-n);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.sb-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Sidebar — Icon button */
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t4);
+  transition: all 0.14s;
+}
+.icon-btn:hover {
+  background: var(--bl-dim2);
+  border-color: var(--bl-bd2);
+  color: var(--bl);
+}
+.icon-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Sidebar — User */
+.sb-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  margin: 8px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--bd);
+  background: var(--bl-dim);
+  cursor: pointer;
+  transition: all 0.14s;
+}
+.sb-user:hover {
+  background: var(--bl-dim2);
+  border-color: var(--bl-bd2);
+}
+.sb-av {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bl-grad);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 2px 8px var(--bl-glow);
+}
+.sb-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--t1);
+  line-height: 1.2;
+}
+.sb-role {
+  font-size: 10.5px;
+  color: var(--t3);
+  margin-top: 1px;
+}
+
+/* Sidebar — Nav */
+.sb-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 10px;
+}
+.sb-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-lbl {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--t5);
+  padding: 10px 8px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--t3);
+  margin-bottom: 1px;
+  transition: all 0.13s;
+  position: relative;
+  user-select: none;
+  border: 1px solid transparent;
+}
+.nav-item:hover {
+  background: var(--bl-dim);
+  color: var(--t2);
+}
+.nav-item.active {
+  background: var(--bl-dim2);
+  color: var(--bl);
+  font-weight: 600;
+  border-color: var(--bl-bd);
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--bl-grad);
+}
+.nav-ico {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.38;
+}
+.nav-ico svg {
+  width: 14px;
+  height: 14px;
+}
+.nav-item.active .nav-ico,
+.nav-item:hover .nav-ico {
+  opacity: 0.75;
+}
+
+.nav-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--am);
+  margin-left: auto;
+  flex-shrink: 0;
+  animation: pam 2.2s infinite;
+}
+@keyframes pam {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(201, 112, 0, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 3.5px rgba(201, 112, 0, 0);
+  }
+}
+
+/* Sidebar — Footer */
+.sb-footer {
+  padding: 10px;
+  border-top: 1px solid var(--bd-n);
+  flex-shrink: 0;
+}
+
+.bt-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--bd-n2);
+  background: var(--surface2);
+  cursor: pointer;
+  margin-bottom: 2px;
+  transition: all 0.14s;
+}
+.bt-row:hover {
+  background: var(--bl-dim);
+  border-color: var(--bl-bd);
+}
+.bt-lbl {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--t2);
+  flex: 1;
+}
+
+/* Toggle */
+.toggle {
+  width: 30px;
+  height: 17px;
+  border-radius: var(--pill);
+  background: var(--t5);
+  position: relative;
+  transition: background 0.22s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.toggle.on {
+  background: var(--bl-grad);
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.22s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+}
+.toggle.on::after {
+  left: 15.5px;
+}
+
+/* Sidebar — Sign-out */
+.nav-item.out {
+  color: var(--t4);
+}
+.nav-item.out:hover {
+  color: var(--re);
+  background: var(--re-dim);
+}
+
+/* ── MAIN-WRAP: mengisi sisa lebar ──────────────── */
+.main-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  min-width: 0;  /* Mencegah overflow di flex child */
+}
+
+
+/* ── MAIN-SCROLL: area konten dengan scroll ─────── */
+.main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 24px 16px;
+}
+
+/* ── PAGE HEADER ──────────────────────────────────────────────────────── */
+.ph {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.ph-eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--bl);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ph-eyebrow::before {
+  content: "";
+  width: 16px;
+  height: 2px;
+  background: var(--bl-grad);
+  border-radius: 1px;
+}
+
+.ph-title {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.ph-title em {
+  font-style: normal;
+  background: var(--bl-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.ph-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--t3);
+  margin-top: 4px;
+}
+.ph-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── AI BADGE ─────────────────────────────────────────────────────────── */
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--pill);
+  border: 1px solid rgba(13,122,78,.20);
+  background: var(--gr-dim);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gr);
+}
+.ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gr);
+  animation: live 2.2s infinite;
+}
+@keyframes live {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 122, 78, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(13, 122, 78, 0);
+  }
+}
+
+/* ── BUTTONS ──────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 15px;
+  border-radius: var(--r-sm);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.14s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn-bl {
+  background: var(--bl-grad);
+  color: #fff;
+  box-shadow: 0 2px 10px var(--bl-glow);
+}
+.btn-bl:hover {
+  background: var(--bl-grad2);
+  box-shadow: 0 4px 16px var(--bl-glow);
+  transform: translateY(-1px);
+}
+.btn-outline {
+  background: var(--surface);
+  color: var(--t2);
+  border: 1px solid var(--bd-n2);
+  box-shadow: 0 1px 3px rgba(25,103,210,.05);
+}
+.btn-outline:hover {
+  background: var(--bl-dim);
+  border-color: var(--bl-bd);
+  color: var(--bl);
+}
+.btn-gr {
+  background: var(--gr);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(13, 122, 78, 0.3);
+}
+.btn-gr:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.btn svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* ── BADGES ───────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2.5px 9px;
+  border-radius: var(--pill);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.b-red {
+  background: var(--re-dim);
+  color: var(--re);
+  border: 1px solid rgba(192,57,43,.18);
+}
+.b-am {
+  background: var(--am-dim);
+  color: var(--am);
+  border: 1px solid rgba(201,112,0,.20);
+}
+.b-gr {
+  background: var(--gr-dim);
+  color: var(--gr);
+  border: 1px solid rgba(13,122,78,.20);
+}
+.b-bl {
+  background: var(--bl-dim2);
+  color: var(--bl);
+  border: 1px solid var(--bl-bd2);
+}
+.b-muted {
+  background: var(--bg2);
+  color: var(--t3);
+  border: 1px solid var(--bd-n2);
+}
+
+/* ── LANG TOGGLE ──────────────────────────────────────────────────────── */
+.lang-toggle {
+  display: inline-flex;
+  background: rgba(25, 103, 210, 0.08);
+  border: 1px solid rgba(25, 103, 210, 0.18);
+  border-radius: var(--pill);
+  padding: 2px;
+  gap: 1px;
+  flex-shrink: 0;
+}
+.lang-btn {
+  padding: 4px 12px;
+  border-radius: var(--pill);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--t4);
+  transition: all 0.15s;
+  background: transparent;
+  border: none;
+}
+.lang-btn.active {
+  background: var(--bl-grad);
+  color: #fff;
+  box-shadow: 0 2px 6px var(--bl-glow);
+}
+
+/* ── LIVE INDICATOR ───────────────────────────────────────────────────── */
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--am);
+  letter-spacing: 0.05em;
+}
+.live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--am);
+  animation: blink 1.6s infinite;
+  flex-shrink: 0;
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ── SHARED CARD ──────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--bd-n);
+  border-radius: var(--r);
+  box-shadow: var(--sh-sm);
+  overflow: hidden;
+  position: relative;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+.card:hover {
+  box-shadow: var(--sh-md);
+  border-color: var(--bd2);
+  transform: translateY(-1px);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 5%,
+    rgba(255, 255, 255, 0.9) 50%,
+    transparent 95%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.cp {
+  padding: 16px 18px;
+  position: relative;
+}
+
+.card-feat {
+  background: linear-gradient(
+    145deg,
+    rgba(25, 103, 210, 0.07) 0%,
+    var(--surface) 50%
+  );
+  border-color: var(--bl-bd);
+  box-shadow:
+    var(--sh-md),
+    0 0 0 1px rgba(25, 103, 210, 0.06);
+}
+.card-feat:hover {
+  box-shadow:
+    0 8px 28px rgba(25,103,210,.11) 0 16px 48px rgba(15,35,80,.05),
+    0 0 0 1px rgba(25, 103, 210, 0.12);
+}
+
+/* ── CARD HEADER ──────────────────────────────────────────────────────── */
+.ch {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.ch-title {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--t1);
+}
+.ch-sub {
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--t3);
+  margin-top: 2px;
+}
+.ch-link {
+  font-size: 11.5px;
+  color: var(--bl);
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.12s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ch-link:hover {
+  opacity: 1;
+}
+
+/* ── FORM ELEMENTS ────────────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.field label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--t2);
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 8px 11px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--bd-n2);
+  background: var(--surface);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 13px;
+  color: var(--t1);
+  transition:
+    border-color 0.14s,
+    box-shadow 0.14s;
+  outline: none;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--bl);
+  box-shadow: 0 0 0 3px rgba(25, 103, 210, 0.1);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ── CHAT BAR ─────────────────────────────────────────────────────────── */
+.chat-bar {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--bd-n2);
+  box-shadow: var(--sh-chat);
+  padding: 12px 26px 14px;
+  position: relative;
+  z-index: 10;
+}
+.chat-bar::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #1967d2, #47a3f3, #1967d2);
+  background-size: 200% 100%;
+  animation: chatline 4s linear infinite;
+}
+@keyframes chatline {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.chat-frame {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--bd2);
+  border-radius: var(--r);
+  padding: 9px 12px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.chat-frame:focus-within {
+  border-color: var(--bl);
+  box-shadow:
+    0 0 0 3px rgba(25, 103, 210, 0.1),
+    var(--sh-sm);
+}
+
+.chat-orb {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--bl-grad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px var(--bl-glow);
+  animation: orbp 3.2s ease-in-out infinite;
+}
+@keyframes orbp {
+  0%,
+  100% {
+    box-shadow: 0 3px 10px var(--bl-glow);
+  }
+  50% {
+    box-shadow: 0 3px 18px rgba(25, 103, 210, 0.35);
+  }
+}
+.chat-orb svg {
+  width: 14px;
+  height: 14px;
+  color: #fff;
+}
+
+.chat-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 13.5px;
+  color: var(--t1);
+  caret-color: var(--bl);
+}
+.chat-input::placeholder {
+  color: var(--t4);
+  font-weight: 300;
+}
+
+/* Chip row & chips */
+.chip-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--pill);
+  border: 1px solid var(--bd-n2);
+  background: var(--surface);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--t3);
+  cursor: pointer;
+  transition: all 0.13s;
+  white-space: nowrap;
+}
+.chip:hover {
+  background: var(--bl-dim);
+  border-color: var(--bl-bd);
+  color: var(--bl);
+}
+
+.chat-div {
+  width: 1px;
+  height: 22px;
+  background: var(--bd-n2);
+  flex-shrink: 0;
+}
+
+/* Send / Attach */
+.send-btn {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+  background: var(--bl-grad);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 2px 10px var(--bl-glow);
+  transition: all 0.14s;
+}
+.send-btn:hover {
+  background: var(--bl-grad2);
+  box-shadow: 0 4px 16px var(--bl-glow);
+  transform: translateY(-1px);
+}
+.send-btn svg {
+  width: 11px;
+  height: 11px;
+}
+
+.attach-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--bd-n2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t4);
+  transition: all 0.13s;
+}
+.attach-btn:hover {
+  background: var(--bl-dim);
+  border-color: var(--bl-bd);
+  color: var(--bl);
+}
+.attach-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Chat hints */
+.chat-hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  font-size: 10.5px;
+  color: var(--t4);
+  font-family: "IBM Plex Mono", monospace;
+  flex-wrap: wrap;
+}
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--bd-n2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 9.5px;
+  color: var(--t3);
+  box-shadow: 0 1px 0 var(--bd-n2);
+}
+
+/* ── ENTRY ANIMATIONS ─────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ph {
+  animation: fadeUp 0.26s 0.04s both;
+}
+.card {
+  animation: fadeUp 0.28s 0.12s both;
+}
+.chat-bar {
+  animation: fadeUp 0.28s 0.42s both;
+}
+
+
+/*
+ * ════════════════════════════════════════════════════════════
+ *  LANG TOGGLE — Expected HTML + JavaScript
+ * ════════════════════════════════════════════════════════════
+ *
+ *  <!-- HTML: Widget toggle di area .ph-right header halaman -->
+ *  <div id="langToggle">
+ *    <div id="langID" onclick="setLang('id')" class="active">🇮🇩 ID</div>
+ *    <div id="langEN" onclick="setLang('en')">🇺🇸 EN</div>
+ *  </div>
+ *
+ *  <!-- Pada elemen yang perlu diterjemahkan, tambahkan atribut: -->
+ *  <span data-id="Drafting Dokumen" data-en="Document Drafting">
+ *    Drafting Dokumen
+ *  </span>
+ *
+ *  ── JavaScript setLang() ──────────────────────────
+ *
+ *  function setLang(lang) {
+ *    // Ganti semua elemen dengan atribut data-id / data-en
+ *    document.querySelectorAll('[data-id]').forEach(el => {
+ *      el.textContent = el.getAttribute('data-' + lang);
+ *    });
+ *    // Update placeholder input
+ *    document.querySelectorAll('[data-placeholder-id]').forEach(el => {
+ *      el.placeholder = el.getAttribute('data-placeholder-' + lang);
+ *    });
+ *    // Update active state toggle button
+ *    document.getElementById('langID').style.background =
+ *      lang === 'id' ? 'var(--bl-grad)' : 'transparent';
+ *    document.getElementById('langEN').style.background =
+ *      lang === 'en' ? 'var(--bl-grad)' : 'transparent';
+ *    localStorage.setItem('lexia-lang', lang);
+ *  }
+ *  // Restore on load
+ *  setLang(localStorage.getItem('lexia-lang') || 'id');
+ */
+
+
+/*
+ * ════════════════════════════════════════════════════════════
+ *  CHAT BAR / ORB / MESH-BG — HTML Notes
+ * ════════════════════════════════════════════════════════════
+ *
+ *  <!-- Animated gradient line atas chat bar -->
+ *  .chat-bar::before animasi: @keyframes chatline (sudah di atas)
+ *
+ *  <!-- AI Orb pulse -->
+ *  .chat-orb animasi: @keyframes orbp (sudah di atas)
+ *
+ *  <!-- Letakkan di awal <body>, sebelum sidebar -->
+ *  <div class="mesh-bg" aria-hidden="true">
+ *    <div class="orb orb-1"></div>
+ *    <div class="orb orb-2"></div>
+ *    <div class="orb orb-3"></div>
+ *  </div>
+ *
+ *  CSS orbs: .orb-1, .orb-2, .orb-3 + @keyframes orb1/orb2/orb3
+ *  (sudah didefinisikan di atas)
+ */
+
+
+/*
+ * ════════════════════════════════════════════════════════════
+ *  MODE BENTENG — Toggle + Fortress State
+ * ════════════════════════════════════════════════════════════
+ *
+ *  <!-- HTML: Toggle di sidebar footer -->
+ *  <div class="bt-row">
+ *    <span class="bt-lbl" data-id="Mode Benteng"
+ *          data-en="Fortress Mode">Mode Benteng</span>
+ *    <div class="toggle" id="bentengToggle"></div>
+ *  </div>
+ *
+ *  ── JavaScript ───────────────────────────────────
+ *
+ *  document.querySelectorAll('.bt-row').forEach(row => {
+ *    row.addEventListener("click", () => {
+ *      const toggle = row.querySelector('.toggle');
+ *      toggle.classList.toggle('on');
+ *      const enabled = toggle.classList.contains("on");
+ *      document.body.classList.toggle("benteng-active", enabled);
+ *      sessionStorage.setItem("benteng", enabled ? "1" : "0");
+ *    });
+ *  });
+ */
+
+/* ── Visual saat Benteng aktif ──────────────────── */
+.benteng-active .sidebar::before {
+  background: linear-gradient(90deg, #C0392B, #E74C3C);  /* Merah */
+}

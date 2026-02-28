@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NotebookLM — Advanced Intelligence System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #060810;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(100, 180, 255, 0.25);
+            --text: #e8ecf4;
+            --text-muted: rgba(232, 236, 244, 0.5);
+            --text-dim: rgba(232, 236, 244, 0.3);
+            --accent-blue: #4fa3ff;
+            --accent-teal: #2dd4bf;
+            --accent-violet: #a78bfa;
+            --accent-pink: #f472b6;
+            --glow-blue: rgba(79, 163, 255, 0.15);
+            --glow-teal: rgba(45, 212, 191, 0.12);
+            --glow-violet: rgba(167, 139, 250, 0.12);
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-lg: 28px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* === CUSTOM CURSOR === */
+        .cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: screen;
+            box-shadow: 0 0 20px var(--accent-blue);
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(79, 163, 255, 0.4);
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.18s ease;
+        }
+
+        /* === NOISE OVERLAY === */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* === AMBIENT GLOW BG === */
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            animation: drift 20s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: rgba(79, 163, 255, 0.07);
+            top: -100px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(45, 212, 191, 0.06);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -8s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: rgba(167, 139, 250, 0.05);
+            top: 40%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            animation-delay: -4s;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(40px, 30px) scale(1.1);
+            }
+        }
+
+        /* === LAYOUT === */
+        .container {
+            width: 100%;
+            max-width: clamp(1200px, 92vw, 2400px);
+            margin: 0 auto;
+            padding: 0 4vw;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === HERO === */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 32px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border-glow);
+            background: rgba(79, 163, 255, 0.08);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--accent-blue);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-teal);
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.3);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(52px, 9vw, 110px);
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            margin-bottom: 28px;
+            animation: fadeUp 0.8s 0.15s ease both;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 50%, var(--accent-violet) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(20px, 2vw, 28px);
+            color: var(--text-muted);
+            max-width: clamp(620px, 50vw, 900px);
+            line-height: 1.6;
+            margin-bottom: 56px;
+            font-weight: 400;
+            animation: fadeUp 0.8s 0.3s ease both;
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(32px, 6vw, 84px);
+            animation: fadeUp 0.8s 0.45s ease both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 36px;
+            font-weight: 500;
+            background: linear-gradient(180deg, #fff 0%, var(--accent-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: 'DM Mono', monospace;
+            animation: bounce 2.5s ease-in-out infinite;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent-blue), transparent);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(8px);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === SECTION === */
+        section {
+            padding: 80px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--accent-teal);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--accent-teal);
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(48px, 6.5vw, 76px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: var(--accent-blue);
+        }
+
+        .section-sub {
+            color: var(--text-muted);
+            font-size: clamp(18px, 1.8vw, 24px);
+            max-width: clamp(520px, 45vw, 800px);
+            line-height: 1.65;
+            margin-bottom: 56px;
+        }
+
+        /* === GLASS CARD === */
+        .glass-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(79, 163, 255, 0.2);
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(79, 163, 255, 0.1);
+        }
+
+        /* === WORKFLOW STEPS === */
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .step-item {
+            display: grid;
+            grid-template-columns: minmax(80px, 6vw) 1fr;
+            gap: 0;
+            cursor: pointer;
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            border-right: none;
+            border-radius: var(--radius) 0 0 var(--radius);
+            flex-direction: column;
+            gap: 4px;
+            padding: 20px 0;
+        }
+
+        .step-body {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: none;
+            padding: clamp(24px, 3vw, 40px) clamp(28px, 4vw, 56px);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover .step-number,
+        .step-item.active .step-number {
+            background: rgba(79, 163, 255, 0.08);
+        }
+
+        .step-item:hover .step-body,
+        .step-item.active .step-body {
+            background: rgba(79, 163, 255, 0.05);
+            border-color: rgba(79, 163, 255, 0.2);
+        }
+
+        .step-item.active .step-number {
+            color: var(--accent-blue);
+            border-color: rgba(79, 163, 255, 0.3);
+        }
+
+        .step-tag {
+            font-size: 10px;
+            font-family: 'DM Mono', monospace;
+            color: var(--accent-teal);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .step-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 0;
+            transition: color 0.3s;
+        }
+
+        .step-item:hover .step-name,
+        .step-item.active .step-name {
+            color: var(--accent-blue);
+        }
+
+        .step-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, margin-top 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .step-item.active .step-desc {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 10px;
+        }
+
+        /* === BENTO GRID === */
+        .bento {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: clamp(16px, 2vw, 32px);
+        }
+
+        .bento-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: clamp(28px, 3vw, 48px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bento-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--c1, var(--accent-blue)), var(--c2, var(--accent-teal)));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .bento-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .bento-card:hover {
+            background: var(--surface-hover);
+            border-color: rgba(255, 255, 255, 0.14);
+            transform: translateY(-4px);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+        }
+
+        .bc-1 {
+            grid-column: span 8;
+            min-height: 280px;
+            --c1: var(--accent-blue);
+            --c2: var(--accent-teal);
+        }
+
+        .bc-2 {
+            grid-column: span 4;
+            min-height: 280px;
+            --c1: var(--accent-violet);
+            --c2: var(--accent-pink);
+        }
+
+        .bc-3 {
+            grid-column: span 4;
+            --c1: var(--accent-teal);
+            --c2: var(--accent-blue);
+        }
+
+        .bc-4 {
+            grid-column: span 4;
+            --c1: var(--accent-pink);
+            --c2: var(--accent-violet);
+        }
+
+        .bc-5 {
+            grid-column: span 4;
+            --c1: var(--accent-violet);
+            --c2: var(--accent-teal);
+        }
+
+        .bc-6 {
+            grid-column: span 6;
+            --c1: var(--accent-blue);
+            --c2: var(--accent-violet);
+        }
+
+        .bc-7 {
+            grid-column: span 6;
+            --c1: var(--accent-teal);
+            --c2: var(--accent-pink);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .card-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .card-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .card-visual {
+            margin-top: 24px;
+            height: 80px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+
+        .wave-bar {
+            width: 3px;
+            border-radius: 2px;
+            background: var(--accent-teal);
+            animation: wave 1.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes wave {
+            from {
+                height: 8px;
+                opacity: 0.4;
+            }
+
+            to {
+                height: var(--h, 40px);
+                opacity: 1;
+            }
+        }
+
+        /* === TIPS GRID === */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(260px, 20vw, 400px), 1fr));
+            gap: clamp(16px, 2vw, 32px);
+        }
+
+        .tip-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: clamp(24px, 2.5vw, 40px);
+            position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tip-card:hover {
+            border-color: rgba(167, 139, 250, 0.3);
+            background: rgba(167, 139, 250, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .tip-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 48px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            line-height: 1;
+        }
+
+        .tip-head {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .tip-text {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* === FORMATS === */
+        .formats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .format-item {
+            display: flex;
+            align-items: center;
+            gap: clamp(20px, 2vw, 36px);
+            padding: clamp(20px, 2.5vw, 32px) clamp(24px, 3vw, 40px);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.25s ease;
+            cursor: default;
+        }
+
+        .format-item:hover {
+            border-color: rgba(79, 163, 255, 0.25);
+            background: rgba(79, 163, 255, 0.04);
+            transform: translateX(6px);
+        }
+
+        .format-emoji {
+            font-size: 22px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .format-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .format-value {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .format-badge {
+            margin-left: auto;
+            padding: 4px 12px;
+            border-radius: 100px;
+            background: rgba(79, 163, 255, 0.1);
+            border: 1px solid rgba(79, 163, 255, 0.2);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--accent-blue);
+            white-space: nowrap;
+        }
+
+        /* === DIVIDER === */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 40px 0;
+        }
+
+        /* === PROGRESS BAR === */
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .progress-label {
+            font-weight: 600;
+        }
+
+        .progress-pct {
+            font-family: 'DM Mono', monospace;
+            color: var(--accent-teal);
+            font-size: 12px;
+        }
+
+        .progress-track {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 100px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .progress-fill.animated {
+            width: var(--target);
+        }
+
+        /* === CTA === */
+        .cta-section {
+            padding: 120px 0;
+            text-align: center;
+        }
+
+        .cta-box {
+            background: var(--surface);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: clamp(80px, 8vw, 140px) clamp(60px, 6vw, 120px);
+            position: relative;
+            overflow: hidden;
+            max-width: clamp(800px, 70vw, 1200px);
+            margin: 0 auto;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(79, 163, 255, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(36px, 5vw, 60px);
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .cta-sub {
+            color: var(--text-muted);
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Syne', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            color: #0a0f1a;
+            box-shadow: 0 0 40px rgba(79, 163, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 60px rgba(79, 163, 255, 0.5);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            margin-left: 12px;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* === FLOATING NAV === */
+        .floating-nav {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(6, 8, 16, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 6px;
+            animation: fadeDown 0.8s 0.6s ease both;
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .nav-pill {
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-pill:hover,
+        .nav-pill.active {
+            background: rgba(79, 163, 255, 0.12);
+            color: var(--accent-blue);
+        }
+
+        /* === HIGHLIGHT BOX === */
+        .highlight-box {
+            background: rgba(79, 163, 255, 0.06);
+            border: 1px solid rgba(79, 163, 255, 0.18);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .hb-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .hb-text {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* === AI FEATURES === */
+        .glass-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(79, 163, 255, 0.15);
+        }
+
+        .tool-interaction {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tool-output {
+            margin-top: 24px;
+            padding: 24px;
+            border-radius: 12px;
+            background: rgba(45, 212, 191, 0.05);
+            border: 1px solid rgba(45, 212, 191, 0.15);
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            display: none;
+        }
+
+        .tool-output.active {
+            display: block;
+            animation: fadeUp 0.5s ease;
+        }
+
+        .hb-text strong {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .bento {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .hero-stats {
+                gap: 28px;
+            }
+
+            .floating-nav .nav-pill:not(:first-child):not(:last-child) {
+                display: none;
+            }
+
+            .cta-box {
+                padding: 48px 28px;
+            }
+
+            .step-item {
+                grid-template-columns: 60px 1fr;
+            }
+        }
+
+        /* === SCROLL REVEAL === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Ambient -->
+    <div class="ambient">
+        <canvas id="particles-canvas"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.8; mix-blend-mode: screen;"></canvas>
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="floating-nav">
+        <a href="#ai-tools" class="nav-pill">AI Tools</a>
+        <a href="#workflow" class="nav-pill">Workflow</a>
+        <a href="#generate" class="nav-pill">Generate</a>
+        <a href="#tools" class="nav-pill">Tools</a>
+        <a href="#strategy" class="nav-pill">Strategy</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Advanced Research Intelligence
+        </div>
+        <h1 class="hero-title">
+            NotebookLM,<br /><em>redefined.</em>
+        </h1>
+        <p class="hero-subtitle">
+            Stop treating it like a chatbot. This is the complete professional workflow — from autonomous source
+            discovery to publication-ready outputs.
+        </p>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-num">50+</span>
+                <span class="stat-label">Sources Found</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">99%</span>
+                <span class="stat-label">Better Than Most</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">6</span>
+                <span class="stat-label">Output Formats</span>
+            </div>
+        </div>
+        <div class="scroll-hint">scroll</div>
+    </section>
+
+    <!-- Section: AI Features -->
+    <section id="ai-tools">
+        <div class="container">
+            <div class="section-label">Phase 0.5</div>
+            <h2 class="section-title reveal">AI-Powered <em>Architect</em></h2>
+            <p class="section-sub reveal reveal-delay-1">Supercharge your NotebookLM workflow with these intelligent
+                preparation tools.</p>
+
+            <div class="api-key-container reveal reveal-delay-2"
+                style="margin-bottom: 40px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; background: rgba(79, 163, 255, 0.04); padding: 24px; border-radius: var(--radius); border: 1px solid rgba(79, 163, 255, 0.15);">
+                <div style="flex: 1; min-width: 280px;">
+                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Gemini API Key Setup</div>
+                    <div style="font-size: 13px; color: var(--text-muted);">Your key is stored locally in your browser
+                        and never sent to our servers.</div>
+                </div>
+                <input type="password" id="gemini-api-key" placeholder="Enter your Gemini API Key..."
+                    class="glass-input"
+                    style="flex: 2; min-width: 250px; border-radius: 100px; font-family: 'DM Mono', monospace;">
+                <button id="save-key-btn" class="btn btn-primary" style="padding: 14px 28px;">Save Key</button>
+                <div style="width: 100%; text-align: right;"><span id="key-status"
+                        style="font-size: 13px; color: var(--text-dim); font-family: 'DM Mono', monospace;">Not
+                        set</span></div>
+            </div>
+
+            <div class="bento reveal reveal-delay-3">
+                <!-- Sourcing Architect -->
+                <div class="bento-card bc-6">
+                    <div class="card-icon">🗺️</div>
+                    <div class="card-title">Sourcing Architect</div>
+                    <div class="card-desc">Predicts the information landscape. Directly supports the Multi-Format
+                        Strategy by telling you exactly what formats to look for before you start.</div>
+                    <div class="tool-interaction" style="margin-top: 24px;">
+                        <input type="text" id="source-topic" placeholder="E.g., Quantum Computing Basics"
+                            class="glass-input">
+                        <button class="btn btn-ghost generate-btn" onclick="runSourcingArchitect()"
+                            style="margin: 12px 0 0 0; width: fit-content; z-index: 100; position: relative;">Predict
+                            Landscape</button>
+                    </div>
+                    <div id="source-out" class="tool-output"></div>
+                </div>
+
+                <!-- Workflow Optimizer -->
+                <div class="bento-card bc-6">
+                    <div class="card-icon">⚙️</div>
+                    <div class="card-title">Workflow Optimizer</div>
+                    <div class="card-desc">Analyzes your final goal to provide a high-precision "Source Mix" percentage
+                        strategy tailored to your exact needs.</div>
+                    <div class="tool-interaction" style="margin-top: 24px;">
+                        <input type="text" id="workflow-goal" placeholder="E.g., Write a 10-page literature review"
+                            class="glass-input">
+                        <button class="btn btn-ghost generate-btn" onclick="runWorkflowOptimizer()"
+                            style="margin: 12px 0 0 0; width: fit-content; z-index: 100; position: relative;">Analyze
+                            Goal</button>
+                    </div>
+                    <div id="workflow-out" class="tool-output"></div>
+                </div>
+
+                <!-- Prompt Architect -->
+                <div class="bento-card bc-6">
+                    <div class="card-icon">✨</div>
+                    <div class="card-title">Prompt Architect</div>
+                    <div class="card-desc">Generates 3 subject-specific validation prompts (Source Mapping, Foundation
+                        Check, Bias Analysis) tailored to your topic.</div>
+                    <div class="tool-interaction" style="margin-top: 24px;">
+                        <input type="text" id="architect-topic" placeholder="E.g., The history of AI models"
+                            class="glass-input">
+                        <button class="btn btn-ghost generate-btn" onclick="runPromptArchitect()"
+                            style="margin: 12px 0 0 0; width: fit-content; z-index: 100; position: relative;">Generate
+                            Prompts</button>
+                    </div>
+                    <div id="architect-out" class="tool-output"></div>
+                </div>
+
+                <!-- Prompt Optimizer -->
+                <div class="bento-card bc-6">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">Prompt Optimizer</div>
+                    <div class="card-desc">Turns a lazy query like "tell me about this PDF" into a highly technical,
+                        structured instruction for NotebookLM.</div>
+                    <div class="tool-interaction" style="margin-top: 24px;">
+                        <textarea id="lazy-prompt" placeholder="E.g., Tell me about this PDF" class="glass-input"
+                            rows="2" style="border-radius: 16px; resize: none; line-height: 1.5;"></textarea>
+                        <button class="btn btn-ghost generate-btn" onclick="runPromptOptimizer()"
+                            style="margin: 12px 0 0 0; width: fit-content; z-index: 100; position: relative;">Optimize
+                            Prompt</button>
+                    </div>
+                    <div id="optimizer-out" class="tool-output"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Workflow -->
+    <section id="workflow">
+        <div class="container">
+            <div class="section-label">Phase 01</div>
+            <h2 class="section-title reveal">Build your <em>intelligence</em><br />foundation</h2>
+            <p class="section-sub reveal reveal-delay-1">The first 15 minutes determine everything. Most people skip
+                these critical setup steps entirely.</p>
+
+            <div class="workflow-steps reveal reveal-delay-2">
+
+                <div class="step-item" data-step="0">
+                    <div class="step-number">01</div>
+                    <div class="step-body">
+                        <div class="step-tag">Naming Strategy</div>
+                        <div class="step-name">Topic-Specific Notebooks</div>
+                        <div class="step-desc">Don't name notebooks "Research" or "Notes." Create focused notebooks like
+                            <strong>Competitive Analysis Q1 2025</strong> or <strong>AI Video Generation
+                                Research.</strong> NotebookLM performs better when sources are tightly related — vague
+                            notebooks produce vague answers.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item" data-step="1">
+                    <div class="step-number">02</div>
+                    <div class="step-body">
+                        <div class="step-tag">Source Discovery</div>
+                        <div class="step-name">Deep Research Mode</div>
+                        <div class="step-desc">Use the dropdown arrow and select <strong>Deep Research</strong> instead
+                            of Fast Research. This launches an agentic AI that autonomously evaluates sources, fills
+                            knowledge gaps, and imports up to 50 curated sources directly into your notebook — work that
+                            would take hours manually.</div>
+                    </div>
+                </div>
+
+                <div class="step-item" data-step="2">
+                    <div class="step-number">03</div>
+                    <div class="step-body">
+                        <div class="step-tag">Source Validation</div>
+                        <div class="step-name">3-Query Validation Framework</div>
+                        <div class="step-desc">Before building anything else, run these three prompts: (1) Create a
+                            table with each source's publication date, author credentials, and type. (2) Which sources
+                            are most frequently cited by others? (3) Summarize the bias of the top five sources. Takes 5
+                            minutes. Saves hours.</div>
+                    </div>
+                </div>
+
+                <div class="step-item" data-step="3">
+                    <div class="step-number">04</div>
+                    <div class="step-body">
+                        <div class="step-tag">Configuration</div>
+                        <div class="step-name">Set a Custom Role & Response Length</div>
+                        <div class="step-desc">In Settings (top right), set your Conversational Goal to
+                            <strong>Custom</strong> and define a role — e.g., "Research analyst focused on AI safety
+                            debates." Choose <strong>Longer</strong> response length for deep analysis. Configure once,
+                            applies to every chat in the notebook forever.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-item" data-step="4">
+                    <div class="step-number">05</div>
+                    <div class="step-body">
+                        <div class="step-tag">Source Filtering</div>
+                        <div class="step-name">Surgical Source Control</div>
+                        <div class="step-desc">Never leave all sources checked. Uncheck everything, then select only 2–4
+                            sources relevant to your specific question. When NotebookLM can only see the right sources,
+                            answers are sharper, more technical, and free of irrelevant noise. One master notebook,
+                            infinite focused sub-queries.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="margin-top:32px;" class="reveal reveal-delay-3">
+                <div class="highlight-box">
+                    <span class="hb-icon">💡</span>
+                    <div class="hb-text"><strong>Pro Tip:</strong> Source validation matters because NotebookLM is
+                        excellent at reducing hallucinations — but only if the sources themselves are reliable. If you
+                        feed it outdated or biased material, it will synthesize flawed information perfectly.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Generate -->
+    <section id="generate">
+        <div class="container">
+            <div class="section-label">Phase 02</div>
+            <h2 class="section-title reveal">Generate <em>publication-ready</em><br />outputs</h2>
+            <p class="section-sub reveal reveal-delay-1">The Studio panel is where your sources become deliverables.
+                Customize everything — never just hit generate.</p>
+
+            <div class="bento reveal reveal-delay-2">
+
+                <!-- Audio Overview -->
+                <div class="bento-card bc-1">
+                    <div class="card-icon">🎙️</div>
+                    <div class="card-tag">Studio · Audio</div>
+                    <div class="card-title">Custom Audio Overviews</div>
+                    <div class="card-desc">Never just click Generate. Use the instruction box to define focus, tone, and
+                        length. Switch format to <strong>Debate</strong> to surface conflicting perspectives instead of
+                        friendly summaries. Regenerate like a rough draft — iterate until the output matches your exact
+                        research goal.</div>
+                    <div class="card-visual">
+                        <div class="wave-bar" style="--h:14px; animation-delay:0s"></div>
+                        <div class="wave-bar" style="--h:32px; animation-delay:0.1s"></div>
+                        <div class="wave-bar" style="--h:24px; animation-delay:0.2s"></div>
+                        <div class="wave-bar" style="--h:42px; animation-delay:0.3s"></div>
+                        <div class="wave-bar" style="--h:18px; animation-delay:0.4s"></div>
+                        <div class="wave-bar" style="--h:36px; animation-delay:0.5s"></div>
+                        <div class="wave-bar" style="--h:28px; animation-delay:0.15s"></div>
+                        <div class="wave-bar" style="--h:44px; animation-delay:0.25s"></div>
+                        <div class="wave-bar" style="--h:20px; animation-delay:0.35s"></div>
+                        <div class="wave-bar" style="--h:30px; animation-delay:0.45s"></div>
+                        <span
+                            style="margin-left:8px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">Debate
+                            Format · ~10 min</span>
+                    </div>
+                </div>
+
+                <!-- Infographic -->
+                <div class="bento-card bc-2">
+                    <div class="card-icon">🎨</div>
+                    <div class="card-tag">Studio · Nano Banana Pro</div>
+                    <div class="card-title">AI Infographics</div>
+                    <div class="card-desc">Powered by Google's image model. Use <strong>Standard detail</strong> to
+                        avoid text errors. Landscape orientation for most use cases. Specify color scheme and structure
+                        in the instruction field. Publication-ready output in minutes.</div>
+                </div>
+
+                <!-- Slide Deck -->
+                <div class="bento-card bc-3">
+                    <div class="card-icon">📊</div>
+                    <div class="card-tag">Studio · Presentations</div>
+                    <div class="card-title">Slide Decks</div>
+                    <div class="card-desc">Choose <strong>Presenter Slides</strong> for minimal text, visual-first
+                        layouts designed for live delivery. Short option = 10 slides. Default = 15–20. Always describe
+                        your audience in the instruction field for targeted content.</div>
+                </div>
+
+                <!-- Video -->
+                <div class="bento-card bc-4">
+                    <div class="card-icon">🎬</div>
+                    <div class="card-tag">Studio · Video</div>
+                    <div class="card-title">Video Overview</div>
+                    <div class="card-desc">Use <strong>Custom visual style</strong> to define aesthetic — color palette,
+                        typography, motion style. The Explainer format provides depth and proper context. Narration
+                        syncs perfectly with AI-generated visuals.</div>
+                </div>
+
+                <!-- Reports -->
+                <div class="bento-card bc-5">
+                    <div class="card-icon">📄</div>
+                    <div class="card-tag">Studio · Reports</div>
+                    <div class="card-title">Custom Reports</div>
+                    <div class="card-desc">Don't use default briefing docs. Use <strong>Create Your Own</strong> to
+                        specify structure, style, and audience. Ask for a "technical white paper with methodology
+                        comparison" and get 90% of the drafting done instantly.</div>
+                </div>
+
+                <!-- Mind Map -->
+                <div class="bento-card bc-6">
+                    <div class="card-icon">🧠</div>
+                    <div class="card-tag">Studio · Visual Learning</div>
+                    <div class="card-title">Interactive Mind Maps</div>
+                    <div class="card-desc">NotebookLM generates an interactive diagram showing how key concepts connect
+                        across all your sources. Click any node to expand subtopics, or trigger a detailed chat response
+                        about that idea. Critical for spotting connections you'd miss reading documents linearly.</div>
+                </div>
+
+                <!-- Flashcards -->
+                <div class="bento-card bc-7">
+                    <div class="card-icon">🃏</div>
+                    <div class="card-tag">Studio · Learning</div>
+                    <div class="card-title">Flashcards & Quiz</div>
+                    <div class="card-desc">Q&A pairs and interactive tests pulled directly from your uploaded sources —
+                        not general knowledge. You're testing exactly what you've researched. Perfect for turning
+                        research into mastery.</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Tools -->
+    <section id="tools">
+        <div class="container">
+            <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:clamp(40px, 5vw, 120px); align-items:start;">
+                <div>
+                    <div class="section-label">Phase 03</div>
+                    <h2 class="section-title reveal">Precision<br />questioning</h2>
+                    <p class="section-sub reveal reveal-delay-1">The quality of your questions determines the quality of
+                        your answers. Vague questions get surface-level summaries.</p>
+                    <div class="divider"></div>
+                    <div class="tips-grid reveal reveal-delay-2">
+                        <div class="tip-card">
+                            <div class="tip-num">01</div>
+                            <div class="tip-head">Be Specific and Structural</div>
+                            <div class="tip-text">Instead of "What does this say about AI?", ask "Compare the three main
+                                technical approaches and explain the key trade-off each makes."</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-head">Verify with Citations</div>
+                            <div class="tip-text">Every response includes numbered citations. Click any citation to
+                                highlight the exact passage in the original source. Verify accuracy instantly.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-head">Cross-Format Synthesis</div>
+                            <div class="tip-text">Ask NotebookLM to "Compare technical approaches in the research papers
+                                with practical concerns raised in the YouTube lecture" to get insights no single source
+                                could provide.</div>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-head">Iterate on Outputs</div>
+                            <div class="tip-text">Think of every generated output as a rough draft. If an audio overview
+                                was too technical, regenerate with "simplify the language." Most people generate once —
+                                top users iterate.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-1">
+                    <div class="section-label" style="margin-top:48px;">Outcome Quality</div>
+                    <div class="progress-container" style="margin-top:28px;" id="progressSection">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Source Breadth</span>
+                                <span class="progress-pct">92%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="--target:92%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Answer Precision</span>
+                                <span class="progress-pct">88%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="--target:88%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Output Relevance</span>
+                                <span class="progress-pct">95%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="--target:95%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Hallucination Reduction</span>
+                                <span class="progress-pct">97%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="--target:97%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Time Saved vs Manual</span>
+                                <span class="progress-pct">85%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="--target:85%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:36px;" class="highlight-box">
+                        <span class="hb-icon">⚡</span>
+                        <div class="hb-text"><strong>Key Insight:</strong> NotebookLM grounds every answer in your
+                            sources, dramatically reducing hallucinations. But this protection only works if your
+                            sources are reliable, current, and diverse in perspective. Quality in = quality out.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Strategy -->
+    <section id="strategy">
+        <div class="container">
+            <div class="section-label">Phase 04</div>
+            <h2 class="section-title reveal">Multi-format <em>source</em><br />strategy</h2>
+            <p class="section-sub reveal reveal-delay-1">The typical user uploads one format. Advanced users mix every
+                available source type to create a 360° knowledge base.</p>
+
+            <div class="formats-list reveal reveal-delay-2">
+                <div class="format-item">
+                    <div class="format-emoji">📄</div>
+                    <div>
+                        <div class="format-name">PDF / Academic Papers</div>
+                        <div class="format-value">Primary research, methodology, citations, structured arguments</div>
+                    </div>
+                    <div class="format-badge">Rigor + Depth</div>
+                </div>
+                <div class="format-item">
+                    <div class="format-emoji">📺</div>
+                    <div>
+                        <div class="format-name">YouTube Videos</div>
+                        <div class="format-value">Conference lectures, explainers, expert commentary — full transcript
+                            imported</div>
+                    </div>
+                    <div class="format-badge">Accessibility</div>
+                </div>
+                <div class="format-item">
+                    <div class="format-emoji">🌐</div>
+                    <div>
+                        <div class="format-name">Websites & Blog Posts</div>
+                        <div class="format-value">Industry perspective, current developments, practitioner insights
+                        </div>
+                    </div>
+                    <div class="format-badge">Context</div>
+                </div>
+                <div class="format-item">
+                    <div class="format-emoji">📁</div>
+                    <div>
+                        <div class="format-name">Google Docs</div>
+                        <div class="format-value">Internal notes, drafts, collaborative documents — live sync</div>
+                    </div>
+                    <div class="format-badge">Internal Intel</div>
+                </div>
+                <div class="format-item">
+                    <div class="format-emoji">🎧</div>
+                    <div>
+                        <div class="format-name">Audio Files & Podcast Transcripts</div>
+                        <div class="format-value">Conversational insights, interview nuance, off-the-record perspectives
+                        </div>
+                    </div>
+                    <div class="format-badge">Narrative</div>
+                </div>
+                <div class="format-item">
+                    <div class="format-emoji">📝</div>
+                    <div>
+                        <div class="format-name">Plain Text</div>
+                        <div class="format-value">Notes, transcripts, raw data, quick captures</div>
+                    </div>
+                    <div class="format-badge">Flexibility</div>
+                </div>
+            </div>
+
+            <div style="margin-top:28px;" class="highlight-box reveal reveal-delay-3">
+                <span class="hb-icon">🔬</span>
+                <div class="hb-text">
+                    <strong>The Strategic Advantage:</strong> Different formats offer fundamentally different value.
+                    Academic papers give you rigor. Videos give you accessible explanations. Blogs give you industry
+                    context. Podcasts give you conversational insights. Combining all of them creates a synthesis that
+                    no single format can match — and NotebookLM will find connections across formats you'd never
+                    discover reading each one separately.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box reveal">
+                <h2 class="cta-title">From amateur<br />to <em>professional.</em></h2>
+                <p class="cta-sub">The difference isn't knowing these features exist. It's following the complete
+                    workflow — every time.</p>
+                <a href="https://notebooklm.google.com" target="_blank" class="btn btn-primary">
+                    Open NotebookLM →
+                </a>
+                <a href="#workflow" class="btn btn-ghost">
+                    Review Workflow
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx - 5 + 'px';
+            cursor.style.top = my - 5 + 'px';
+        });
+
+        function animRing() {
+            rx += (mx - rx) * 0.12;
+            ry += (my - ry) * 0.12;
+            ring.style.left = rx - 20 + 'px';
+            ring.style.top = ry - 20 + 'px';
+            requestAnimationFrame(animRing);
+        }
+        animRing();
+
+        document.querySelectorAll('a,button,.bento-card,.step-item,.format-item').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2.5)';
+                ring.style.transform = 'scale(1.4)';
+                ring.style.borderColor = 'rgba(79,163,255,0.7)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                ring.style.transform = 'scale(1)';
+                ring.style.borderColor = 'rgba(79,163,255,0.4)';
+            });
+        });
+
+        // Particles Background
+        const pCanvas = document.getElementById('particles-canvas');
+        if (pCanvas) {
+            const ctx = pCanvas.getContext('2d');
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+            pCanvas.width = w;
+            pCanvas.height = h;
+
+            const particles = [];
+            for (let i = 0; i < 70; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: Math.random() * 2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5 - 0.5, // drift upwards
+                    opacity: Math.random() * 0.5 + 0.2,
+                    color: Math.random() > 0.5 ? 'rgba(79, 163, 255,' : 'rgba(45, 212, 191,'
+                });
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // wrap around
+                    if (p.y < 0) { p.y = h; p.x = Math.random() * w; }
+                    if (p.x < 0) p.x = w;
+                    if (p.x > w) p.x = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + p.opacity + ')';
+                    ctx.fill();
+                });
+                requestAnimationFrame(drawParticles);
+            }
+            drawParticles();
+
+            window.addEventListener('resize', () => {
+                w = window.innerWidth;
+                h = window.innerHeight;
+                pCanvas.width = w;
+                pCanvas.height = h;
+            });
+        }
+
+        // Card glow and 3D Tilt Effect
+        document.querySelectorAll('.glass-card, .bento-card, .tip-card, .format-item').forEach(card => {
+            // Apply 3D perspective
+            card.style.transformStyle = 'preserve-3d';
+
+            // Set perspective on parent so 3D works across multiple children
+            if (card.parentElement) {
+                card.parentElement.style.perspective = '1200px';
+            }
+
+            // Find elements we want to "float" above the card background
+            const innerEls = card.querySelectorAll('.card-icon, .card-title, .tip-num, .format-emoji, .cta-title');
+
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = e.clientX - r.left;
+                const y = e.clientY - r.top;
+
+                const centerX = r.width / 2;
+                const centerY = r.height / 2;
+
+                // Calculate tilt angles (max 6 degrees)
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+
+                // Disable transition during active movement for responsiveness
+                card.style.transition = 'none';
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+                // Update ambient glow positions
+                const xPct = (x / r.width * 100).toFixed(1);
+                const yPct = (y / r.height * 100).toFixed(1);
+                card.style.setProperty('--mx', xPct + '%');
+                card.style.setProperty('--my', yPct + '%');
+
+                // Parallax inner elements
+                innerEls.forEach(el => {
+                    el.style.transform = `translateZ(40px)`;
+                    el.style.transition = 'none';
+                });
+            });
+
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                innerEls.forEach(el => el.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)');
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+
+                // Reset inner elements
+                innerEls.forEach(el => {
+                    el.style.transform = `translateZ(0px)`;
+                    el.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                });
+            });
+        });
+
+        // Accordion steps
+        const steps = document.querySelectorAll('.step-item');
+        steps.forEach((step, i) => {
+            step.addEventListener('click', () => {
+                const wasActive = step.classList.contains('active');
+                steps.forEach(s => s.classList.remove('active'));
+                if (!wasActive) step.classList.add('active');
+            });
+        });
+        steps[0].classList.add('active');
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // Progress animation
+        const progressObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+                        bar.classList.add('animated');
+                    });
+                    progressObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const prog = document.getElementById('progressSection');
+        if (prog) progressObs.observe(prog);
+
+        // Active nav highlight
+        const sections = document.querySelectorAll('section[id]');
+        const navPills = document.querySelectorAll('.nav-pill');
+        const navObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navPills.forEach(p => p.classList.remove('active'));
+                    const active = document.querySelector(`.nav-pill[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { threshold: 0.4 });
+        sections.forEach(s => navObs.observe(s));
+
+        // Wave bar varied delays
+        document.querySelectorAll('.wave-bar').forEach((bar, i) => {
+            bar.style.animationDelay = (i * 0.07) + 's';
+            bar.style.animationDuration = (0.9 + Math.random() * 0.6) + 's';
+        });
+        // Setup API Key Configuration
+        const keyInput = document.getElementById('gemini-api-key');
+        const keyStatus = document.getElementById('key-status');
+        const saveKeyBtn = document.getElementById('save-key-btn');
+
+        if (keyInput) {
+            const storedKey = localStorage.getItem('gemini_api_key');
+            if (storedKey) {
+                keyInput.value = storedKey;
+                keyStatus.textContent = '*Key loaded securely from local storage*';
+                keyStatus.style.color = 'var(--accent-teal)';
+            }
+
+            saveKeyBtn.addEventListener('click', () => {
+                const val = keyInput.value.trim();
+                if (val) {
+                    localStorage.setItem('gemini_api_key', val);
+                    keyStatus.textContent = '*Key saved to browser!*';
+                    keyStatus.style.color = 'var(--accent-teal)';
+                } else {
+                    localStorage.removeItem('gemini_api_key');
+                    keyStatus.textContent = 'Key cleared';
+                    keyStatus.style.color = 'var(--text-dim)';
+                }
+            });
+        }
+
+        // Generic API Caller
+        async function callGemini(prompt, outputElementID) {
+            const outputElement = document.getElementById(outputElementID);
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if (!apiKey) {
+                outputElement.innerHTML = '<span style="color:var(--accent-pink)">Error: Please save your Gemini API Key first.</span>';
+                outputElement.classList.add('active');
+                return;
+            }
+
+            outputElement.innerHTML = '<span style="color:var(--text-dim)">Analyzing with Gemini 1.5 Pro...</span>';
+            outputElement.classList.add('active');
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { temperature: 0.7 }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                let text = data.candidates[0].content.parts[0].text;
+
+                // Parse markdown boldly
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--accent-blue)">$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n\n/g, '<br><br>')
+                    .replace(/\n/g, '<br>');
+
+                outputElement.innerHTML = text;
+            } catch (err) {
+                outputElement.innerHTML = `<span style="color:var(--accent-pink)">Error: ${err.message}. Check your API key.</span>`;
+            }
+        }
+
+        window.runSourcingArchitect = () => {
+            const topic = document.getElementById('source-topic').value || 'Quantum Computing';
+            const prompt = `You are a Sourcing Architect. The user's research topic is: "${topic}". Directly support the "Multi-Format Strategy" by prescribing exactly what format of sources they should hunt for (PDFs, YouTube videos, blogs, podcasts) to build a 360-degree knowledge base on this specific topic. Give a short, bulleted strategy.`;
+            callGemini(prompt, 'source-out');
+        };
+
+        window.runWorkflowOptimizer = () => {
+            const goal = document.getElementById('workflow-goal').value || 'Write a literature review';
+            const prompt = `You are the Workflow Optimizer. The user's goal is: "${goal}". Provide a high-precision "Source Mix" percentage (e.g., 40% Academic PDFs, 30% Expert Video Interviews, etc) tailored for exactly this goal, along with 2-3 sentences of strategic reasoning why this mix works best in NotebookLM.`;
+            callGemini(prompt, 'workflow-out');
+        };
+
+        window.runPromptArchitect = () => {
+            const topic = document.getElementById('architect-topic').value || 'The history of AI';
+            const prompt = `You are the Prompt Architect. The topic is "${topic}". Generate exactly 3 highly specific validation prompts to use inside NotebookLM against the uploaded sources:
+1. Source Mapping Check (to understand what sources cover what parts of the topic)
+2. Foundation Check (to verify definitions and baselines in the sources)
+3. Bias Analysis (to check for missing perspectives or slanted views).
+Format nicely. Keep them under 3 sentences each. Do not use markdown headers, just pure text with bullets.`;
+            callGemini(prompt, 'architect-out');
+        };
+
+        window.runPromptOptimizer = () => {
+            const lazy = document.getElementById('lazy-prompt').value || 'Tell me about this PDF';
+            const prompt = `You are a Prompt Optimizer for NotebookLM. Take this lazy query: "${lazy}" and turn it into a highly technical, structured instruction. A structured instruction typically references "Analyze methodology in Section X", "Compare with industry standards in Source B", or requests specific output formats like tables. Return ONLY the modernized, professional prompt without any intro text.`;
+            callGemini(prompt, 'optimizer-out');
+        };
+    </script>
+</body>
+
+</html>
