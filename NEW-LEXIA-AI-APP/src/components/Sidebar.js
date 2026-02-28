@@ -5,7 +5,7 @@
  * Supports: active route highlighting, EN/ID toggle, Mode Benteng toggle.
  */
 
-const LOGO_SRC = '/assets/my-new-logo.svg';
+const LOGO_SRC = '/assets/my-new-logo.png';
 
 /* ── Nav config ─────────────────────────────────── */
 const NAV_ITEMS = [
