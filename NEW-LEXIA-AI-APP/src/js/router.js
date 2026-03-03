@@ -6,6 +6,7 @@
  */
 
 import { renderSidebar } from "../components/Sidebar.js";
+import { renderChatBar, initChatBar } from "../components/ChatBar.js";
 
 /* ── Route table ─────────────────────────────────── */
 const routes = {
@@ -48,6 +49,7 @@ window.setLang = function setLang(lang) {
   const btnEN = document.getElementById("btnEN");
   if (btnID) btnID.classList.toggle("active", lang === "id");
   if (btnEN) btnEN.classList.toggle("active", lang === "en");
+  document.documentElement.lang = lang;
   localStorage.setItem("lexia-lang", lang);
 };
 
@@ -65,7 +67,7 @@ async function handleRoute() {
         <div style="text-align:center;padding:40px">
           <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--t5);margin-bottom:8px">404</div>
           <div style="font-size:14px;color:var(--t3);margin-bottom:20px">Halaman tidak ditemukan / Page not found</div>
-          <button class="btn btn-bl" onclick="window.navigate('/')">← Kembali ke Dasbor</button>
+          <button class="btn btn-bl" data-navigate="/">← Kembali ke Dasbor</button>
         </div>
       </div>`;
     return;
@@ -79,6 +81,11 @@ async function handleRoute() {
   }
 
   try {
+    // Show loading spinner for app pages
+    if (path !== "/login") {
+      root.innerHTML = '<div class="route-loader" style="height:100vh"></div>';
+    }
+
     const mod = await loader();
 
     if (path === "/login") {
@@ -132,6 +139,27 @@ function renderApp(mod, path) {
   }
 
   root.appendChild(mainWrap);
+
+  // Announce route change for screen readers
+  let announcer = document.getElementById('route-announcer');
+  if (!announcer) {
+    announcer = document.createElement('div');
+    announcer.id = 'route-announcer';
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.setAttribute('aria-atomic', 'true');
+    announcer.className = 'sr-only';
+    document.body.appendChild(announcer);
+  }
+  announcer.textContent = document.title || path;
+
+  // Shared chat bar (pages can opt out by exporting chatBar = false)
+  if (mod.chatBar !== false) {
+    mainWrap.insertAdjacentHTML('beforeend', renderChatBar());
+    initChatBar(mainWrap);
+  }
+
+  // Page enter animation
+  mainWrap.classList.add("page-enter");
 
   if (mod.initInteractions) {
       mod.initInteractions(mainWrap);
@@ -192,6 +220,20 @@ function initBentengToggle() {
   }
 }
 
+/* ── Toast notification helper ────────────────────── */
+window.showToast = function showToast(msg, duration = 2400) {
+  let t = document.querySelector('.lexia-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.className = 'lexia-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), duration);
+};
+
 /* ── SPA link navigation ─────────────────────────── */
 export function navigate(path) {
   history.pushState(null, "", path);
@@ -200,6 +242,15 @@ export function navigate(path) {
 
 // Make navigate available globally for onclick handlers
 window.navigate = navigate;
+
+/* ── Delegated navigation for [data-navigate] ────── */
+root.addEventListener('click', (e) => {
+  const nav = e.target.closest('[data-navigate]');
+  if (nav) {
+    e.preventDefault();
+    window.navigate(nav.dataset.navigate);
+  }
+});
 
 /* ── Event listeners ─────────────────────────────── */
 window.addEventListener("popstate", handleRoute);

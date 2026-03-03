@@ -1,3 +1,5 @@
+export const chatBar = false;
+
 export function render(container) {
   container.innerHTML = `
 
@@ -11,11 +13,11 @@ export function render(container) {
       </div>
       <div class="ph-right">
         <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" onclick="if(window.setLang) window.setLang('id')">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" onclick="if(window.setLang) window.setLang('en')">🇺🇸 EN</button>
+          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
+          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
         </div>
-        <button class="btn btn-outline" id="cmpBtnUpload" onclick="resetComparison()" data-id="📁 Upload Dokumen" data-en="📁 Upload Documents">📁 Upload Dokumen</button>
-        <button class="btn btn-bl" id="cmpBtnExport" style="display:none" data-id="⬇ Ekspor Redline" data-en="⬇ Export Redline">⬇ Ekspor Redline</button>
+        <button class="btn btn-outline" id="cmpBtnUpload" data-action="resetComparison" data-id="📁 Upload Dokumen" data-en="📁 Upload Documents">📁 Upload Dokumen</button>
+        <button class="btn btn-bl" id="cmpBtnExport" style="display:none" data-id="⬇ Ekspor Redline" data-en="⬇ Export Redline" data-toast="Mengunduh redline dokumen…">⬇ Ekspor Redline</button>
       </div>
     </div>
 
@@ -28,7 +30,7 @@ export function render(container) {
         <div class="cmp-drop-row">
 
           <!-- ── Zone A ── -->
-          <div class="cmp-drop-zone" id="dropZoneA" onclick="simulateUploadA()">
+          <div class="cmp-drop-zone" id="dropZoneA" data-action="simulateUploadA" role="button" tabindex="0">
             <svg class="cmp-drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             <div class="cmp-drop-tag" data-id="Dokumen A · Versi Lama" data-en="Document A · Original">Dokumen A · Versi Lama</div>
             <div class="cmp-drop-main" data-id="Seret file ke sini, atau <span class='cmp-browse'>telusuri</span>" data-en="Drop a file here, or <span class='cmp-browse'>browse</span>">Seret file ke sini, atau <span class="cmp-browse">telusuri</span></div>
@@ -41,7 +43,7 @@ export function render(container) {
           </div>
 
           <!-- ── Zone B ── -->
-          <div class="cmp-drop-zone" id="dropZoneB" onclick="simulateUploadB()">
+          <div class="cmp-drop-zone" id="dropZoneB" data-action="simulateUploadB" role="button" tabindex="0">
             <svg class="cmp-drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             <div class="cmp-drop-tag" data-id="Dokumen B · Versi Baru" data-en="Document B · Revised">Dokumen B · Versi Baru</div>
             <div class="cmp-drop-main" data-id="Seret file ke sini, atau <span class='cmp-browse'>telusuri</span>" data-en="Drop a file here, or <span class='cmp-browse'>browse</span>">Seret file ke sini, atau <span class="cmp-browse">telusuri</span></div>
@@ -51,7 +53,7 @@ export function render(container) {
         </div><!-- /cmp-drop-row -->
 
         <div class="cmp-action-bar">
-          <button class="btn btn-bl cmp-compare-btn" id="compareBtn" onclick="runComparison()" disabled>
+          <button class="btn btn-bl cmp-compare-btn" id="compareBtn" data-action="runComparison" disabled>
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 8h10M3 4h7M3 12h5"/><path d="M10 5l3 3-3 3"/></svg>
             <span id="compareBtnLbl" data-id="Bandingkan Dokumen" data-en="Compare Documents">Bandingkan Dokumen</span>
           </button>
@@ -69,22 +71,22 @@ export function render(container) {
 
       <!-- Document info bar -->
       <div class="compare-header">
-        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <div class="flex-center" style="gap:14px;flex-wrap:wrap">
           <div class="cmp-doc-pill">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" style="flex-shrink:0"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6L10 2z"/><path d="M10 2v4h4"/></svg>
             <span id="docALabel" data-id="Dokumen A" data-en="Document A" style="font-size:10px;color:var(--t4)">Dokumen A</span>
-            <span id="docAName" style="font-size:12.5px;font-weight:600;color:var(--t1)">PKS-Turbin-v1.0-2024.pdf</span>
+            <span id="docAName" class="text-item-title">PKS-Turbin-v1.0-2024.pdf</span>
           </div>
           <div style="font-size:18px;color:var(--t4);line-height:1">⇄</div>
           <div class="cmp-doc-pill cmp-doc-b">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" style="flex-shrink:0"><path d="M10 2H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1V6L10 2z"/><path d="M10 2v4h4"/></svg>
             <span id="docBLabel" data-id="Dokumen B" data-en="Document B" style="font-size:10px;color:var(--t4)">Dokumen B</span>
-            <span id="docBName" style="font-size:12.5px;font-weight:600;color:var(--t1)">PKS-Turbin-v2.1-2026.pdf</span>
+            <span id="docBName" class="text-item-title">PKS-Turbin-v2.1-2026.pdf</span>
           </div>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+        <div class="flex-center" style="gap:8px;flex-shrink:0">
           <span class="badge b-am" data-id="14 perbedaan ditemukan" data-en="14 differences found">14 perbedaan ditemukan</span>
-          <button class="btn btn-outline btn-sm" data-id="Tandai Semua" data-en="Mark All">Tandai Semua</button>
+          <button class="btn btn-outline btn-sm" data-id="Tandai Semua" data-en="Mark All" data-toast="Semua perbedaan ditandai">Tandai Semua</button>
         </div>
       </div>
 
@@ -192,23 +194,36 @@ export function render(container) {
             <div class="ch-title" data-id="Analisis AI — Temuan Material" data-en="AI Analysis — Material Findings">Analisis AI — Temuan Material</div>
             <div class="ch-sub" data-id="Perubahan yang berpotensi berdampak signifikan pada PLN" data-en="Changes potentially having significant impact on PLN">Perubahan yang berpotensi berdampak signifikan pada PLN</div>
           </div>
-          <button class="btn btn-outline btn-sm" data-id="📋 Ekspor Analisis" data-en="📋 Export Analysis">📋 Ekspor Analisis</button>
+          <button class="btn btn-outline btn-sm" data-id="📋 Ekspor Analisis" data-en="📋 Export Analysis" data-toast="Mengunduh analisis perbandingan…">📋 Ekspor Analisis</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-          <div style="padding:14px;background:var(--re-dim);border:1px solid var(--re-bd);border-radius:var(--r-sm)">
-            <div style="font-size:11px;font-weight:700;color:var(--re);margin-bottom:6px;display:flex;align-items:center;gap:5px"><span>🔴</span><span data-id="Risiko Tinggi" data-en="High Risk">Risiko Tinggi</span></div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.55" data-id="Kenaikan nilai kontrak 15.6% (Rp 7 Miliar) tanpa justifikasi addendum yang jelas dalam dokumen revisi." data-en="Contract value increase of 15.6% (Rp 7 Billion) without clear addendum justification in the revised document.">Kenaikan nilai kontrak 15.6% (Rp 7 Miliar) tanpa justifikasi addendum yang jelas dalam dokumen revisi.</div>
+          <div class="status-card-re">
+            <div class="status-card-hd" style="color:var(--re)"><span>🔴</span><span data-id="Risiko Tinggi" data-en="High Risk">Risiko Tinggi</span></div>
+            <div class="text-body-sm" data-id="Kenaikan nilai kontrak 15.6% (Rp 7 Miliar) tanpa justifikasi addendum yang jelas dalam dokumen revisi." data-en="Contract value increase of 15.6% (Rp 7 Billion) without clear addendum justification in the revised document.">Kenaikan nilai kontrak 15.6% (Rp 7 Miliar) tanpa justifikasi addendum yang jelas dalam dokumen revisi.</div>
           </div>
-          <div style="padding:14px;background:var(--am-dim);border:1px solid var(--am-bd);border-radius:var(--r-sm)">
-            <div style="font-size:11px;font-weight:700;color:var(--am);margin-bottom:6px;display:flex;align-items:center;gap:5px"><span>🟠</span><span data-id="Perhatian" data-en="Attention">Perhatian</span></div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.55" data-id="Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART PLN." data-en="12-month duration extension requires Board of Commissioners approval per PLN Articles of Association.">Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART PLN.</div>
+          <div class="status-card-am">
+            <div class="status-card-hd" style="color:var(--am)"><span>🟠</span><span data-id="Perhatian" data-en="Attention">Perhatian</span></div>
+            <div class="text-body-sm" data-id="Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART PLN." data-en="12-month duration extension requires Board of Commissioners approval per PLN Articles of Association.">Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART PLN.</div>
           </div>
-          <div style="padding:14px;background:var(--gr-dim);border:1px solid var(--gr-bd);border-radius:var(--r-sm)">
-            <div style="font-size:11px;font-weight:700;color:var(--gr);margin-bottom:6px;display:flex;align-items:center;gap:5px"><span>🟢</span><span data-id="Positif" data-en="Positive">Positif</span></div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.55" data-id="Denda diperjelas dengan cap 5% — lebih melindungi PLN dari eksposur denda tidak terbatas." data-en="Penalty cap at 5% clarified — better protects PLN from unlimited penalty exposure.">Denda diperjelas dengan cap 5% — lebih melindungi PLN dari eksposur denda tidak terbatas.</div>
+          <div class="status-card-gr">
+            <div class="status-card-hd" style="color:var(--gr)"><span>🟢</span><span data-id="Positif" data-en="Positive">Positif</span></div>
+            <div class="text-body-sm" data-id="Denda diperjelas dengan cap 5% — lebih melindungi PLN dari eksposur denda tidak terbatas." data-en="Penalty cap at 5% clarified — better protects PLN from unlimited penalty exposure.">Denda diperjelas dengan cap 5% — lebih melindungi PLN dari eksposur denda tidak terbatas.</div>
           </div>
         </div>
       </div></div>
+
+      <!-- Save to Database bar -->
+      <div class="save-to-db-bar">
+        <div class="flex-center" style="gap:8px">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" style="color:var(--bl)"><path d="M3 13V3h7l3 3v7H3zM9.5 3v3H13"/></svg>
+          <span class="text-item-title" data-id="Simpan dokumen ke Database Regulasi" data-en="Save documents to Regulation Database">Simpan dokumen ke Database Regulasi</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline" style="padding:5px 12px;font-size:11.5px" data-id="💾 Simpan Dok. A" data-en="💾 Save Doc A" data-save-to-db="PKS-Turbin-v1.0-2024.pdf">💾 Simpan Dok. A</button>
+          <button class="btn btn-outline" style="padding:5px 12px;font-size:11.5px" data-id="💾 Simpan Dok. B" data-en="💾 Save Doc B" data-save-to-db="PKS-Turbin-v2.1-2026.pdf">💾 Simpan Dok. B</button>
+          <button class="btn btn-bl" style="padding:5px 12px;font-size:11.5px" data-id="💾 Simpan Keduanya" data-en="💾 Save Both" data-save-to-db="PKS-Turbin-v1.0-2024.pdf, PKS-Turbin-v2.1-2026.pdf">💾 Simpan Keduanya</button>
+        </div>
+      </div>
 
     </div><!-- /cmpResults -->
 
@@ -219,27 +234,28 @@ export function render(container) {
     <div class="chat-frame">
       <div class="chat-orb"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5l1.2 3.7L13 6.5 9.2 7.7 8 11.5 6.8 7.7 3 6.5l3.8-1.3L8 1.5z"/></svg></div>
       <input class="chat-input" type="text"
+        aria-label="Ask Lexia about comparison"
         data-placeholder-id="Tanya Lexia — mis. 'Jelaskan implikasi hukum kenaikan nilai kontrak ini'…"
         data-placeholder-en="Ask Lexia — e.g., 'Explain the legal implications of this contract value increase'…"
         placeholder="Tanya Lexia — mis. 'Jelaskan implikasi hukum kenaikan nilai kontrak ini'…"/>
       <div class="chip-row">
-        <span class="chip" data-id="✦ Jelaskan Perbedaan" data-en="✦ Explain Differences">✦ Jelaskan Perbedaan</span>
-        <span class="chip" data-id="⚠ Risiko Utama" data-en="⚠ Key Risks">⚠ Risiko Utama</span>
-        <span class="chip" data-id="📋 Rangkum Perubahan" data-en="📋 Summarize Changes">📋 Rangkum Perubahan</span>
+        <span class="chip" role="button" tabindex="0" data-id="✦ Jelaskan Perbedaan" data-en="✦ Explain Differences" data-action="chipInput" data-chip-text="Jelaskan semua perbedaan material">✦ Jelaskan Perbedaan</span>
+        <span class="chip" role="button" tabindex="0" data-id="⚠ Risiko Utama" data-en="⚠ Key Risks" data-action="chipInput" data-chip-text="Apa risiko utama dari perubahan ini?">⚠ Risiko Utama</span>
+        <span class="chip" role="button" tabindex="0" data-id="📋 Rangkum Perubahan" data-en="📋 Summarize Changes" data-action="chipInput" data-chip-text="Rangkum semua perubahan kontrak">📋 Rangkum Perubahan</span>
       </div>
       <div class="chat-div"></div>
-      <button class="attach-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 7.5l-6 6a4 4 0 01-5.5-5.5l7-7a2.5 2.5 0 013.5 3.5l-7 7a1 1 0 01-1.4-1.4l6-6"/></svg></button>
-      <button class="send-btn"><span data-id="Kirim" data-en="Send">Kirim</span> <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 8h12M9 4l4 4-4 4"/></svg></button>
+      <button class="attach-btn" aria-label="Attach"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 7.5l-6 6a4 4 0 01-5.5-5.5l7-7a2.5 2.5 0 013.5 3.5l-7 7a1 1 0 01-1.4-1.4l6-6"/></svg></button>
+      <button class="send-btn" aria-label="Send"><span data-id="Kirim" data-en="Send">Kirim</span> <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 8h12M9 4l4 4-4 4"/></svg></button>
     </div>
     <div class="chat-hint"><span class="kbd">⌘K</span> command palette &nbsp;·&nbsp; <span class="kbd">@</span> <span data-id="mention dokumen" data-en="mention document">mention dokumen</span> &nbsp;·&nbsp; Lexia AI v2.1</div>
   </div>
 
   <!-- LOADING OVERLAY -->
   <div class="loading-overlay" id="cmpLoading" style="display:none">
-    <div class="loading-card">
+    <div class="loading-card" role="dialog" aria-modal="true">
       <div class="loading-spinner"></div>
-      <div style="font-family:'Playfair Display',serif;font-size:16px;color:var(--t1)" data-id="Menganalisis Perbedaan..." data-en="Analyzing Differences...">Menganalisis Perbedaan...</div>
-      <div style="font-size:12px;color:var(--t3);margin-top:5px" data-id="AI sedang membandingkan setiap klausul" data-en="AI is comparing each clause">AI sedang membandingkan setiap klausul</div>
+      <div class="heading-serif-lg" data-id="Menganalisis Perbedaan..." data-en="Analyzing Differences...">Menganalisis Perbedaan...</div>
+      <div class="text-muted-sm" style="font-size:12px;margin-top:5px" data-id="AI sedang membandingkan setiap klausul" data-en="AI is comparing each clause">AI sedang membandingkan setiap klausul</div>
       <div style="margin-top:14px">
         <div class="l-step active" id="cls1" data-id="⟳ Mengekstrak teks dari kedua dokumen..." data-en="⟳ Extracting text from both documents...">⟳ Mengekstrak teks dari kedua dokumen...</div>
         <div class="l-step" id="cls2" data-id="○ Mendeteksi dan menyelaraskan klausul..." data-en="○ Detecting and aligning clauses...">○ Mendeteksi dan menyelaraskan klausul...</div>
@@ -247,6 +263,18 @@ export function render(container) {
         <div class="l-step" id="cls4" data-id="○ Menilai risiko hukum setiap perubahan..." data-en="○ Assessing legal risk of each change...">○ Menilai risiko hukum setiap perubahan...</div>
         <div class="l-step" id="cls5" data-id="○ Menyusun laporan perbandingan akhir..." data-en="○ Compiling final comparison report...">○ Menyusun laporan perbandingan akhir...</div>
       </div>
+    </div>
+  </div>
+
+  <!-- SAVE TO DATABASE PICKER -->
+  <div class="loading-overlay" id="saveToDbOverlay" style="display:none">
+    <div class="save-to-db-modal" role="dialog" aria-modal="true">
+      <div class="flex-between" style="margin-bottom:14px">
+        <div class="heading-serif" data-id="Simpan ke Database" data-en="Save to Database">Simpan ke Database</div>
+        <button class="btn btn-outline" style="padding:4px 12px;font-size:11px" data-action="closeSaveToDbPicker" data-id="✕ Batal" data-en="✕ Cancel">✕ Batal</button>
+      </div>
+      <div class="text-muted-sm" style="font-size:12px;margin-bottom:12px" id="saveToDbFilename">—</div>
+      <div class="save-to-db-list" id="saveToDbList"></div>
     </div>
   </div>
 
@@ -275,7 +303,8 @@ export function initInteractions(root) {
       </div>
       <div class="cmp-file-name">${filename}</div>
       <div class="cmp-file-meta">✅ ${size} · ${ready}</div>
-      <div class="cmp-file-replace">${replace}</div>`;
+      <div class="cmp-file-replace">${replace}</div>
+      <div class="save-to-db-link" data-save-to-db="${filename}" data-stop-propagation="true" data-id="💾 Simpan ke Database" data-en="💾 Save to Database">💾 Simpan ke Database</div>`;
   }
 
   function updateCompareBtn() {
@@ -300,45 +329,59 @@ export function initInteractions(root) {
   }
 
   /* ── Simulate upload A ── */
-  window.simulateUploadA = function() {
+  function simulateUploadA() {
     const z = document.getElementById('dropZoneA');
     if (!z) return;
     filesA = true;
     const lang = localStorage.getItem('lexia-lang') || 'id';
     z.classList.add('has-file');
     z.innerHTML = fileReadyHtml('PKS-Turbin-v1.0-2024.pdf', '2.4 MB', lang);
-    z.onclick = function() {
-      filesA = false;
-      const l = localStorage.getItem('lexia-lang') || 'id';
-      z.classList.remove('has-file');
-      z.innerHTML = zoneHtml('A', l);
-      z.onclick = () => simulateUploadA();
-      updateCompareBtn();
-    };
+    z.setAttribute('data-action', 'resetUploadA');
     updateCompareBtn();
-  };
+  }
+
+  /* ── Reset upload A (click to replace file) ── */
+  function resetUploadA() {
+    const z = document.getElementById('dropZoneA');
+    if (!z) return;
+    filesA = false;
+    const l = localStorage.getItem('lexia-lang') || 'id';
+    z.classList.remove('has-file');
+    z.innerHTML = zoneHtml('A', l);
+    z.setAttribute('data-action', 'simulateUploadA');
+    updateCompareBtn();
+  }
 
   /* ── Simulate upload B ── */
-  window.simulateUploadB = function() {
+  function simulateUploadB() {
     const z = document.getElementById('dropZoneB');
     if (!z) return;
     filesB = true;
     const lang = localStorage.getItem('lexia-lang') || 'id';
     z.classList.add('has-file');
     z.innerHTML = fileReadyHtml('PKS-Turbin-v2.1-2026.pdf', '3.1 MB', lang);
-    z.onclick = function() {
-      filesB = false;
-      const l = localStorage.getItem('lexia-lang') || 'id';
-      z.classList.remove('has-file');
-      z.innerHTML = zoneHtml('B', l);
-      z.onclick = () => simulateUploadB();
-      updateCompareBtn();
-    };
+    z.setAttribute('data-action', 'resetUploadB');
     updateCompareBtn();
-  };
+  }
+
+  /* ── Reset upload B (click to replace file) ── */
+  function resetUploadB() {
+    const z = document.getElementById('dropZoneB');
+    if (!z) return;
+    filesB = false;
+    const l = localStorage.getItem('lexia-lang') || 'id';
+    z.classList.remove('has-file');
+    z.innerHTML = zoneHtml('B', l);
+    z.setAttribute('data-action', 'simulateUploadB');
+    updateCompareBtn();
+  }
+
+  // Keep window references for backward compatibility
+  window.simulateUploadA = simulateUploadA;
+  window.simulateUploadB = simulateUploadB;
 
   /* ── Run analysis (loading → results) ── */
-  window.runComparison = function() {
+  function runComparison() {
     const overlay = document.getElementById('cmpLoading');
     if (overlay) overlay.style.display = 'flex';
     if (window.setLang) window.setLang(localStorage.getItem('lexia-lang') || 'id');
@@ -366,7 +409,8 @@ export function initInteractions(root) {
         }, 500);
       }
     }, 580);
-  };
+  }
+  window.runComparison = runComparison;
 
   function showResults() {
     document.getElementById('cmpUpload').style.display = 'none';
@@ -395,7 +439,7 @@ export function initInteractions(root) {
   }
 
   /* ── Reset to upload state ── */
-  window.resetComparison = function() {
+  function resetComparison() {
     const lang = localStorage.getItem('lexia-lang') || 'id';
 
     document.getElementById('cmpResults').style.display = 'none';
@@ -414,8 +458,8 @@ export function initInteractions(root) {
     filesB = false;
     const zA = document.getElementById('dropZoneA');
     const zB = document.getElementById('dropZoneB');
-    if (zA) { zA.classList.remove('has-file'); zA.innerHTML = zoneHtml('A', lang); zA.onclick = () => simulateUploadA(); }
-    if (zB) { zB.classList.remove('has-file'); zB.innerHTML = zoneHtml('B', lang); zB.onclick = () => simulateUploadB(); }
+    if (zA) { zA.classList.remove('has-file'); zA.innerHTML = zoneHtml('A', lang); zA.setAttribute('data-action', 'simulateUploadA'); }
+    if (zB) { zB.classList.remove('has-file'); zB.innerHTML = zoneHtml('B', lang); zB.setAttribute('data-action', 'simulateUploadB'); }
 
     // Reset loading steps
     const ids = ['cls1', 'cls2', 'cls3', 'cls4', 'cls5'];
@@ -427,7 +471,8 @@ export function initInteractions(root) {
 
     updateCompareBtn();
     if (window.setLang) window.setLang(lang);
-  };
+  }
+  window.resetComparison = resetComparison;
 
   /* ── Chat bar interactions ── */
   const ci = root.querySelector('.chat-input');
@@ -438,6 +483,102 @@ export function initInteractions(root) {
   if (sb) {
     sb.addEventListener('click', () => { if (ci && ci.value.trim()) { ci.value = ''; ci.focus(); } });
   }
+
+  /* ── Save to Database picker ── */
+  function showSaveToDbPicker(filename) {
+    const overlay = document.getElementById('saveToDbOverlay');
+    const label = document.getElementById('saveToDbFilename');
+    const list = document.getElementById('saveToDbList');
+    if (!overlay || !list) return;
+    const lang = localStorage.getItem('lexia-lang') || 'id';
+    if (label) label.textContent = filename;
+    const dbs = window._lexiaRegDatabases || [];
+    list.innerHTML = dbs.map(db => {
+      const name = lang === 'en' ? db.name_en : db.name_id;
+      const badgeClass = db.type === 'default' ? 'b-bl' : 'b-gr';
+      const badgeText = db.type === 'default' ? 'Lexia Default' : (lang === 'en' ? 'Custom' : 'Kustom');
+      return `<div class="save-to-db-option" data-action="saveDocToDb" data-db-id="${db.id}" data-db-filename="${filename.replace(/'/g,"&apos;")}">
+        <span class="text-emoji">${db.type === 'default' ? '📚' : '📁'}</span>
+        <div style="flex:1;min-width:0">
+          <div class="text-item-title">${name}</div>
+          <div class="text-muted-sm">${db.docCount} ${lang === 'en' ? 'docs' : 'dokumen'} · ${db.size}</div>
+        </div>
+        <span class="badge ${badgeClass}" style="font-size:9px">${badgeText}</span>
+      </div>`;
+    }).join('');
+    overlay.style.display = 'flex';
+    if (window.setLang) window.setLang(lang);
+  }
+  window.showSaveToDbPicker = showSaveToDbPicker;
+
+  function closeSaveToDbPicker() {
+    const overlay = document.getElementById('saveToDbOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+  window.closeSaveToDbPicker = closeSaveToDbPicker;
+
+  function saveDocToDb(dbId, filename) {
+    const lang = localStorage.getItem('lexia-lang') || 'id';
+    const dbs = window._lexiaRegDatabases || [];
+    const db = dbs.find(d => d.id === dbId);
+    const dbName = db ? (lang === 'en' ? db.name_en : db.name_id) : dbId;
+    closeSaveToDbPicker();
+    window.showToast(lang === 'en' ? `"${filename}" saved to "${dbName}"` : `"${filename}" disimpan ke "${dbName}"`);
+  }
+  window.saveDocToDb = saveDocToDb;
+
+  // Close picker on overlay click
+  const pickerOverlay = document.getElementById('saveToDbOverlay');
+  if (pickerOverlay) {
+    pickerOverlay.addEventListener('click', function(e) {
+      if (e.target === pickerOverlay) closeSaveToDbPicker();
+    });
+  }
+
+  /* ── Delegated click handler for all data-* attributes ── */
+  root.addEventListener('click', e => {
+    // data-navigate
+    const nav = e.target.closest('[data-navigate]');
+    if (nav) { window.navigate(nav.dataset.navigate); return; }
+
+    // data-lang
+    const lang = e.target.closest('[data-lang]');
+    if (lang) { if (window.setLang) window.setLang(lang.dataset.lang); return; }
+
+    // data-save-to-db (must be checked before data-action to handle stopPropagation)
+    const saveDb = e.target.closest('[data-save-to-db]');
+    if (saveDb) {
+      if (saveDb.dataset.stopPropagation === 'true') e.stopPropagation();
+      showSaveToDbPicker(saveDb.dataset.saveToDb);
+      return;
+    }
+
+    // data-toast
+    const toast = e.target.closest('[data-toast]');
+    if (toast) { window.showToast(toast.dataset.toast); return; }
+
+    // data-action
+    const action = e.target.closest('[data-action]');
+    if (action) {
+      switch (action.dataset.action) {
+        case 'simulateUploadA': simulateUploadA(); break;
+        case 'simulateUploadB': simulateUploadB(); break;
+        case 'resetUploadA': resetUploadA(); break;
+        case 'resetUploadB': resetUploadB(); break;
+        case 'runComparison': runComparison(); break;
+        case 'resetComparison': resetComparison(); break;
+        case 'closeSaveToDbPicker': closeSaveToDbPicker(); break;
+        case 'saveDocToDb':
+          saveDocToDb(action.dataset.dbId, action.dataset.dbFilename);
+          break;
+        case 'chipInput': {
+          const input = action.closest('.chat-frame') && action.closest('.chat-frame').querySelector('.chat-input');
+          if (input) { input.value = action.dataset.chipText; input.focus(); }
+          break;
+        }
+      }
+    }
+  });
 
   if (typeof window.setLang === 'function') {
     window.setLang(localStorage.getItem('lexia-lang') || 'id');

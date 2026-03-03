@@ -13,9 +13,15 @@ export function render(container) {
       <img src="/assets/my-new-logo.png" alt="Lexia AI" style="height: 40px; margin-bottom: 8px;" />
       <div style="font-size:13.5px;color:var(--t3)" data-id="Masuk ke ruang kerja Anda" data-en="Sign in to your workspace">Masuk ke ruang kerja Anda</div>
     </div>
+    <div style="position:absolute;top:16px;right:16px">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
+        <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
+      </div>
+    </div>
 
     <!-- SIMPLE LOGIN FORM -->
-    <form id="loginForm" style="display:flex;flex-direction:column;gap:16px" onsubmit="event.preventDefault(); sessionStorage.setItem('lexia-auth', '1'); window.navigate('/')">
+    <form id="loginForm" style="display:flex;flex-direction:column;gap:16px">
       <div class="field">
         <label data-id="Email Perusahaan" data-en="Corporate Email">Email Perusahaan</label>
         <input type="email" required placeholder="nama@perusahaan.com" style="padding:10px 14px;font-size:14px" />
@@ -26,7 +32,7 @@ export function render(container) {
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:-6px">
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--t3)"><input type="checkbox" /> <span data-id="Ingat saya" data-en="Remember me">Ingat saya</span></label>
-        <a href="#" style="color:var(--bl);text-decoration:none;font-weight:500" data-id="Lupa sandi?" data-en="Forgot password?">Lupa sandi?</a>
+        <a href="javascript:void(0)" style="color:var(--bl);text-decoration:none;font-weight:500" data-id="Lupa sandi?" data-en="Forgot password?" data-toast="Fitur reset kata sandi segera hadir">Lupa sandi?</a>
       </div>
       
       <button type="submit" class="btn btn-bl" style="width:100%;justify-content:center;padding:12px;font-size:14px;margin-top:8px" data-id="Submit" data-en="Submit">Submit</button>
@@ -38,7 +44,7 @@ export function render(container) {
       <div style="height:1px;background:var(--bd-n);flex:1"></div>
     </div>
 
-    <button class="btn btn-outline" style="width:100%;justify-content:center;padding:10px;font-size:13.5px;display:flex;align-items:center;gap:8px" onclick="sessionStorage.setItem('lexia-auth', '1'); window.navigate('/')">
+    <button class="btn btn-outline" style="width:100%;justify-content:center;padding:10px;font-size:13.5px;display:flex;align-items:center;gap:8px" data-sso-login>
       <svg width="16" height="16" viewBox="0 0 48 48" fill="none"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       Google SSO
     </button>
@@ -52,7 +58,36 @@ export function render(container) {
 }
 
 export function initInteractions(root) {
+  // Delegated handlers
+  root.addEventListener('click', e => {
+    const lang = e.target.closest('[data-lang]');
+    if (lang) { if (window.setLang) window.setLang(lang.dataset.lang); return; }
+    const nav = e.target.closest('[data-navigate]');
+    if (nav) { e.preventDefault(); window.navigate(nav.dataset.navigate); return; }
+    const toast = e.target.closest('[data-toast]');
+    if (toast) { window.showToast(toast.dataset.toast); return; }
+  });
+
+  // Login form submit
+  const form = root.querySelector('#loginForm');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      sessionStorage.setItem('lexia-auth', '1');
+      window.navigate('/');
+    });
+  }
+
+  // Google SSO button
+  const sso = root.querySelector('[data-sso-login]');
+  if (sso) {
+    sso.addEventListener('click', () => {
+      sessionStorage.setItem('lexia-auth', '1');
+      window.navigate('/');
+    });
+  }
+
   if (typeof window.setLang === 'function') {
-    window.setLang(document.documentElement.lang || 'id');
+    window.setLang(localStorage.getItem('lexia-lang') || 'id');
   }
 }

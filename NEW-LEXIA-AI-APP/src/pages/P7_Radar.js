@@ -8,12 +8,12 @@ export function render(container) {
       </div>
       <div class="ph-right">
         <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" onclick="if(window.setLang) window.setLang('id')">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" onclick="if(window.setLang) window.setLang('en')">🇺🇸 EN</button>
+          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
+          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
         </div>
         <span class="live"><span class="live-dot"></span>Live</span>
         <div class="ai-badge"><span class="ai-dot"></span><span data-id="Memindai…" data-en="Scanning…">Memindai…</span></div>
-        <button class="btn btn-bl" data-id="🔔 Atur Notifikasi" data-en="🔔 Set Notifications">🔔 Atur Notifikasi</button>
+        <button class="btn btn-bl" data-id="🔔 Atur Notifikasi" data-en="🔔 Set Notifications" data-toast="Pengaturan notifikasi segera hadir">🔔 Atur Notifikasi</button>
       </div>
     </div>
 
@@ -51,7 +51,7 @@ export function render(container) {
               <option data-id="Kritis" data-en="Critical">Kritis</option>
               <option data-id="Sedang" data-en="Medium">Sedang</option>
             </select>
-            <button class="btn btn-outline" style="padding:4px 10px;font-size:11.5px" data-id="Filter" data-en="Filter">Filter</button>
+            <button class="btn btn-outline" style="padding:4px 10px;font-size:11.5px" data-id="Filter" data-en="Filter" data-toast="Filter segera hadir">Filter</button>
           </div>
         </div>
         <table class="reg-table">
@@ -94,8 +94,8 @@ export function render(container) {
         </div></div>
 
         <div class="card"><div class="cp">
-          <button class="btn btn-bl" style="width:100%;justify-content:center;margin-bottom:8px" data-id="✨ Analisis Dampak AI" data-en="✨ AI Impact Analysis">✨ Analisis Dampak AI</button>
-          <button class="btn btn-outline" style="width:100%;justify-content:center" data-id="📋 Ekspor Laporan Radar" data-en="📋 Export Radar Report">📋 Ekspor Laporan Radar</button>
+          <button class="btn btn-bl" style="width:100%;justify-content:center;margin-bottom:8px" data-id="✨ Analisis Dampak AI" data-en="✨ AI Impact Analysis" data-toast="Menjalankan analisis dampak AI…">✨ Analisis Dampak AI</button>
+          <button class="btn btn-outline" style="width:100%;justify-content:center" data-id="📋 Ekspor Laporan Radar" data-en="📋 Export Radar Report" data-toast="Mengunduh laporan radar…">📋 Ekspor Laporan Radar</button>
         </div></div>
       </div>
     </div>
@@ -103,4 +103,11 @@ export function render(container) {
   `;
 }
 
-export function initInteractions() {}
+export function initInteractions(root) {
+  root.addEventListener('click', e => {
+    const lang = e.target.closest('[data-lang]');
+    if (lang) { if (window.setLang) window.setLang(lang.dataset.lang); return; }
+    const toast = e.target.closest('[data-toast]');
+    if (toast) { window.showToast(toast.dataset.toast); return; }
+  });
+}

@@ -116,6 +116,19 @@
   --sky-bd:  rgba(2,119,189,.18);
 }
 
+/* ── SCREEN READER ONLY (a11y utility) ─────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── CSS RESET ──────────────────────────────────────────────────────────── */
 *,
 *::before,
@@ -700,11 +713,15 @@ body {
 }
 
 
-/* ── MAIN-SCROLL: area konten dengan scroll ─────── */
+/* ── MAIN-SCROLL: full-viewport flex column (no page scroll) ── */
 .main-scroll {
   flex: 1;
-  overflow-y: auto;
-  padding: 28px 32px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 24px 28px 16px;
+  min-height: 0;
+  gap: 12px;
 }
 
 /* ── PAGE HEADER ──────────────────────────────────────────────────────── */
@@ -1420,4 +1437,58 @@ body {
 /* ── Visual saat Benteng aktif ──────────────────── */
 .benteng-active .sidebar::before {
   background: linear-gradient(90deg, #C0392B, #E74C3C);  /* Merah */
+}
+
+/* ── TOAST NOTIFICATION ───────────────────────────────────────────────── */
+.lexia-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: var(--pill);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(15,35,80,.22);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.lexia-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Route loading spinner ──────────────────────── */
+.route-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.route-loader::after {
+  content: '';
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--bl-dim2);
+  border-top-color: var(--bl);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg) } }
+
+/* ── Page enter animation ───────────────────────── */
+.page-enter {
+  animation: pageEnter .3s ease both;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

@@ -30,7 +30,7 @@ const NAV_ITEMS = [
   {
     group: { id: 'Administrasi', en: 'Administration' },
     items: [
-      { path: '/matters',    id: 'Matter & Audit',      en: 'Matter & Audit',       icon: '<path d="M2 4h12v10H2zM5 4V3a3 3 0 016 0v1"/>' },
+      { path: '/matters',    id: 'Perkara & Audit',     en: 'Case & Audit',         icon: '<path d="M2 4h12v10H2zM5 4V3a3 3 0 016 0v1"/>' },
     ]
   }
 ];
@@ -112,7 +112,7 @@ export function renderSidebar(activePath) {
   aside.innerHTML = `
     <div class="sb-head">
       <img class="sb-logo" src="${LOGO_SRC}" alt="Lexia"/>
-      <button class="icon-btn" id="sbCollapse" title="Collapse">
+      <button class="icon-btn" id="sbCollapse" title="Collapse" aria-label="Collapse sidebar">
         <svg class="sb-collapse-ico" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"
              style="transform:${_minimized ? 'rotate(180deg)' : 'rotate(0deg)'};transition:transform .22s ease">
           <path d="M8 2L4 6l4 4"/>
@@ -134,7 +134,7 @@ export function renderSidebar(activePath) {
       ${NAV_ITEMS.map(section => `
         <div class="nav-lbl" data-id="${section.group.id}" data-en="${section.group.en}">${section.group.id}</div>
         ${section.items.map(item => `
-          <div class="nav-item${item.path === activePath ? ' active' : ''}" onclick="window.navigate('${item.path}')" title="${item.id}">
+          <div class="nav-item${item.path === activePath ? ' active' : ''}" data-navigate="${item.path}" title="${item.id}" role="button" tabindex="0">
             <span class="nav-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7">${item.icon}</svg></span>
             <span class="nav-label" data-id="${item.id}" data-en="${item.en}">${item.id}</span>
             ${item.dot ? '<span class="nav-dot"></span>' : ''}
@@ -162,14 +162,34 @@ export function renderSidebar(activePath) {
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"
              style="color:var(--t3);flex-shrink:0"><rect x="4" y="7" width="8" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>
         <span class="bt-lbl" data-id="Mode Benteng" data-en="Fortress Mode">Mode Benteng</span>
-        <div class="toggle" id="bentengToggle"></div>
+        <div class="toggle" id="bentengToggle" role="switch" aria-checked="false"></div>
       </div>
-      <div class="nav-item out" onclick="window.navigate('/login')" title="Keluar">
+      <div class="nav-item out" data-navigate="/login" title="Keluar" role="button" tabindex="0" aria-label="Sign out">
         <span class="nav-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 14H3a1 1 0 01-1-1V3a1 1 0 011-1h3M11 11l3-3-3-3M7 8h7"/></svg></span>
         <span class="nav-label" data-id="Keluar" data-en="Sign Out">Keluar</span>
       </div>
     </div>
   `;
+
+  /* ── Delegated navigation for [data-navigate] ── */
+  aside.addEventListener('click', (e) => {
+    const nav = e.target.closest('[data-navigate]');
+    if (nav) {
+      e.preventDefault();
+      window.navigate(nav.dataset.navigate);
+    }
+  });
+
+  /* ── Keyboard navigation for [data-navigate] ── */
+  aside.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const nav = e.target.closest('[data-navigate]');
+      if (nav) {
+        e.preventDefault();
+        window.navigate(nav.dataset.navigate);
+      }
+    }
+  });
 
   /* ── Collapse / minimize toggle ── */
   const collapseBtn = aside.querySelector('#sbCollapse');
