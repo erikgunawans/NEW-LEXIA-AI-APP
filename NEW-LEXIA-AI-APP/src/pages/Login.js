@@ -32,7 +32,7 @@ export function render(container) {
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:-6px">
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--t3)"><input type="checkbox" /> <span data-id="Ingat saya" data-en="Remember me">Ingat saya</span></label>
-        <a href="javascript:void(0)" style="color:var(--bl);text-decoration:none;font-weight:500" data-id="Lupa sandi?" data-en="Forgot password?" data-toast="Fitur reset kata sandi segera hadir">Lupa sandi?</a>
+        <a href="javascript:void(0)" style="color:var(--bl);text-decoration:none;font-weight:500" data-id="Lupa sandi?" data-en="Forgot password?" data-action="forgotPassword">Lupa sandi?</a>
       </div>
       
       <button type="submit" class="btn btn-bl" style="width:100%;justify-content:center;padding:12px;font-size:14px;margin-top:8px" data-id="Submit" data-en="Submit">Submit</button>
@@ -48,6 +48,28 @@ export function render(container) {
       <svg width="16" height="16" viewBox="0 0 48 48" fill="none"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       Google SSO
     </button>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPwModal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center" role="dialog" aria-modal="true">
+    <div class="card" style="width:100%;max-width:400px;padding:32px;display:flex;flex-direction:column;gap:18px;position:relative">
+      <button data-action="closeForgotPw" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;color:var(--t3);cursor:pointer" aria-label="Close">&times;</button>
+      <div style="text-align:center">
+        <div style="font-size:28px;margin-bottom:4px">🔐</div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--t5)" data-id="Reset Kata Sandi" data-en="Reset Password">Reset Kata Sandi</div>
+        <div style="font-size:12.5px;color:var(--t3);margin-top:6px" data-id="Masukkan email Anda untuk menerima tautan reset" data-en="Enter your email to receive a reset link">Masukkan email Anda untuk menerima tautan reset</div>
+      </div>
+      <form id="forgotPwForm" style="display:flex;flex-direction:column;gap:14px">
+        <div class="field">
+          <label data-id="Email Perusahaan" data-en="Corporate Email">Email Perusahaan</label>
+          <input type="email" required placeholder="nama@perusahaan.com" style="padding:10px 14px;font-size:14px" />
+        </div>
+        <button type="submit" class="btn btn-bl" style="width:100%;justify-content:center;padding:11px;font-size:13.5px" data-id="Kirim Tautan Reset" data-en="Send Reset Link">Kirim Tautan Reset</button>
+      </form>
+      <div style="text-align:center;font-size:11.5px;color:var(--t4)">
+        <a href="javascript:void(0)" data-action="closeForgotPw" style="color:var(--bl);text-decoration:none" data-id="← Kembali ke login" data-en="← Back to login">← Kembali ke login</a>
+      </div>
+    </div>
   </div>
 
   <div style="position:absolute;bottom:24px;width:100%;text-align:center;font-size:11px;color:var(--t4)" data-id="© 2026 Lexia AI. Hak Cipta Dilindungi." data-en="© 2026 Lexia AI. All Rights Reserved.">
@@ -66,6 +88,19 @@ export function initInteractions(root) {
     if (nav) { e.preventDefault(); window.navigate(nav.dataset.navigate); return; }
     const toast = e.target.closest('[data-toast]');
     if (toast) { window.showToast(toast.dataset.toast); return; }
+    const action = e.target.closest('[data-action]');
+    if (action) {
+      const modal = root.querySelector('#forgotPwModal');
+      if (action.dataset.action === 'forgotPassword' && modal) {
+        modal.style.display = 'flex';
+        const lang = localStorage.getItem('lexia-lang') || 'id';
+        if (window.setLang) window.setLang(lang);
+      }
+      if (action.dataset.action === 'closeForgotPw' && modal) {
+        modal.style.display = 'none';
+      }
+      return;
+    }
   });
 
   // Login form submit
@@ -75,6 +110,17 @@ export function initInteractions(root) {
       e.preventDefault();
       sessionStorage.setItem('lexia-auth', '1');
       window.navigate('/');
+    });
+  }
+
+  // Forgot password form submit
+  const forgotForm = root.querySelector('#forgotPwForm');
+  if (forgotForm) {
+    forgotForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const modal = root.querySelector('#forgotPwModal');
+      if (modal) modal.style.display = 'none';
+      window.showToast('Tautan reset telah dikirim ke email Anda');
     });
   }
 
