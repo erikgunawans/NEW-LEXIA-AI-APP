@@ -3,7 +3,6 @@ export function render(container) {
   <div class="main-scroll">
     <div class="ph">
       <div>
-        <div class="ph-eyebrow" data-id="Legal Intelligence Platform" data-en="Legal Intelligence Platform">Legal Intelligence Platform</div>
         <div class="ph-title" data-id="Dasbor <em>Utama</em>" data-en="Main <em>Dashboard</em>">Dasbor <em>Utama</em></div>
         <div class="ph-sub" data-id="Kamis, 27 Februari 2026 · Divisi Hukum PLN" data-en="Thursday, 27 February 2026 · PLN Legal Division">Kamis, 27 Februari 2026 &nbsp;·&nbsp; Divisi Hukum PLN</div>
       </div>
@@ -12,12 +11,8 @@ export function render(container) {
           <button class="lang-btn active" id="btnID" onclick="if(window.setLang) window.setLang('id')">🇮🇩 ID</button>
           <button class="lang-btn" id="btnEN" onclick="if(window.setLang) window.setLang('en')">🇺🇸 EN</button>
         </div>
-        <div class="ai-badge"><span class="ai-dot"></span><span data-id="Lexia AI Aktif" data-en="Lexia AI Active">Lexia AI Aktif</span></div>
         <button class="btn btn-outline" data-id="+ Matter Baru" data-en="+ New Matter">+ Matter Baru</button>
-        <button class="btn btn-bl">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 8h12M9 4l4 4-4 4"/></svg>
-          <span data-id="Ekspor Laporan" data-en="Export Report">Ekspor Laporan</span>
-        </button>
+        <button class="btn btn-outline" title="Ekspor Laporan" data-id="↗ Ekspor" data-en="↗ Export">↗ Ekspor</button>
       </div>
     </div>
 

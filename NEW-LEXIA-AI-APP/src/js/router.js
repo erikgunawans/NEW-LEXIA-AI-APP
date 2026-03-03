@@ -56,7 +56,20 @@ const root = document.getElementById("app-root");
 
 async function handleRoute() {
   const path = location.pathname;
-  const loader = routes[path] || routes["/"];
+  const loader = routes[path];
+
+  // Unknown route — show 404
+  if (!loader) {
+    root.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:center;height:100vh;width:100%">
+        <div style="text-align:center;padding:40px">
+          <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--t5);margin-bottom:8px">404</div>
+          <div style="font-size:14px;color:var(--t3);margin-bottom:20px">Halaman tidak ditemukan / Page not found</div>
+          <button class="btn btn-bl" onclick="window.navigate('/')">← Kembali ke Dasbor</button>
+        </div>
+      </div>`;
+    return;
+  }
 
   // Auth guard (skip for login)
   if (path !== "/login" && !requireAuth()) {
@@ -76,15 +89,13 @@ async function handleRoute() {
   } catch (err) {
     console.error("[Router] Failed to load page:", err);
     root.innerHTML =
-      '<div style="padding:40px;color:var(--t3)">Page not found.</div>';
+      '<div style="padding:40px;color:var(--t3)">Failed to load page.</div>';
   }
 }
 
 function renderLogin(mod) {
   root.innerHTML = "";
   const content = mod.default ? mod.default() : mod.render(root);
-  // Unlike other pages, Login.js's render currently innerHTMLs directly into the container
-  // So returning undefined is fine if it handles its own insertion
   if (content !== undefined) {
       if (typeof content === "string") {
         root.innerHTML = content;
@@ -92,6 +103,12 @@ function renderLogin(mod) {
         root.appendChild(content);
       }
   }
+  if (mod.initInteractions) {
+    mod.initInteractions(root);
+  }
+  // Restore language on login page
+  const lang = localStorage.getItem("lexia-lang") || "id";
+  window.setLang(lang);
 }
 
 function renderApp(mod, path) {
@@ -120,12 +137,40 @@ function renderApp(mod, path) {
       mod.initInteractions(mainWrap);
   }
 
+  initCardTilt(mainWrap);
+
   // Restore language
   const lang = localStorage.getItem("lexia-lang") || "id";
   window.setLang(lang);
 
   // Init Benteng toggle
   initBentengToggle();
+}
+
+/* ── Card 3D tilt (mouse-tracking) ───────────────── */
+function initCardTilt(container) {
+  container.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      // Disable transform transition while mouse is inside so tilt tracks instantly
+      card.style.transitionProperty = 'box-shadow, border-color';
+    });
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const tiltX = ((cy - y) / cy) * 4;   // ±4 deg on X axis
+      const tiltY = ((x - cx) / cx) * 3;   // ±3 deg on Y axis
+      card.style.transform =
+        `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-5px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      // Re-enable spring transition for the return animation
+      card.style.transitionProperty = '';
+      card.style.transform = '';
+    });
+  });
 }
 
 function initBentengToggle() {

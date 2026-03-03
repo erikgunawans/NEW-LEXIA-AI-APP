@@ -1,17 +1,15 @@
 export function render(container) {
   container.innerHTML = `
-<div class="main-wrap">
   <div class="main-scroll">
     <div class="ph">
       <div>
-        <div class="ph-eyebrow" data-id="Administrasi · Matter & Audit" data-en="Administration · Matter & Audit">Administrasi · Matter &amp; Audit</div>
-        <div class="ph-title">Matter &amp; <em>Audit Trail</em></div>
+        <div class="ph-title" data-id="Matter &amp; <em>Audit Trail</em>" data-en="Matter &amp; <em>Audit Trail</em>">Matter &amp; <em>Audit Trail</em></div>
         <div class="ph-sub" data-id="Kelola semua perkara hukum dan lacak jejak digital setiap aktivitas" data-en="Manage all legal matters and track the digital trail of every activity">Kelola semua perkara hukum dan lacak jejak digital setiap aktivitas</div>
       </div>
       <div class="ph-right">
         <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" onclick="setLang('id')">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" onclick="setLang('en')">🇺🇸 EN</button>
+          <button class="lang-btn active" id="btnID" onclick="if(window.setLang) window.setLang('id')">🇮🇩 ID</button>
+          <button class="lang-btn" id="btnEN" onclick="if(window.setLang) window.setLang('en')">🇺🇸 EN</button>
         </div>
         <button class="btn btn-outline" data-id="🔍 Cari Matter" data-en="🔍 Search Matter">🔍 Cari Matter</button>
         <button class="btn btn-bl" data-id="+ Matter Baru" data-en="+ New Matter">+ Matter Baru</button>
@@ -172,30 +170,7 @@ export function render(container) {
       </div>
     </div>
   </div>
-</div>
   `;
 }
 
-export function initInteractions(root) {
-  root.querySelectorAll('.bt-row').forEach(r => {
-    r.addEventListener('click',() => {
-      const tg = r.querySelector('.toggle');
-      if (tg) tg.classList.toggle('on');
-    });
-  });
-
-  const ci = root.querySelector('.chat-input');
-  if(ci){
-    ci.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey)e.preventDefault();});
-  }
-  const sb = root.querySelector('.send-btn');
-  if(sb){
-    sb.addEventListener('click',function(){
-      if(ci&&ci.value.trim()){ci.value='';ci.focus();}
-    });
-  }
-
-  if (typeof window.setLang === 'function') {
-    window.setLang(document.documentElement.lang || 'id');
-  }
-}
+export function initInteractions() {}

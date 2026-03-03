@@ -1,16 +1,14 @@
 export function render(container) {
   container.innerHTML = `
-<div class="main-wrap">
-  <div class="ph" style="padding:16px 26px;flex-shrink:0;border-bottom:1px solid var(--bd-n)">
+  <div class="ph" style="padding:16px 26px;flex-shrink:0;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.60);background:var(--glass-bg-light);backdrop-filter:var(--glass-blur-sm) var(--glass-sat);-webkit-backdrop-filter:var(--glass-blur-sm) var(--glass-sat)">
     <div>
-      <div class="ph-eyebrow" data-id="AI Tools · Asisten Legal" data-en="AI Tools · Legal Assistant">AI Tools · Asisten Legal</div>
-      <div class="ph-title" style="font-size:22px">Asisten Legal <em>AI</em></div>
+      <div class="ph-title" style="font-size:22px" data-id="Asisten Legal <em>AI</em>" data-en="AI Legal <em>Assistant</em>">Asisten Legal <em>AI</em></div>
       <div class="ph-sub" data-id="Jawaban terverifikasi dari regulasi dan yurisprudensi Indonesia" data-en="Verified answers from Indonesian regulations and jurisprudence">Jawaban terverifikasi dari regulasi dan yurisprudensi Indonesia</div>
     </div>
     <div class="ph-right">
       <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" onclick="setLang('id')">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" onclick="setLang('en')">🇺🇸 EN</button>
+          <button class="lang-btn active" id="btnID" onclick="if(window.setLang) window.setLang('id')">🇮🇩 ID</button>
+          <button class="lang-btn" id="btnEN" onclick="if(window.setLang) window.setLang('en')">🇺🇸 EN</button>
         </div>
       <div class="ai-badge"><span class="ai-dot"></span><span data-id="Gemini 1.5 Pro" data-en="Gemini 1.5 Pro">Gemini 1.5 Pro</span></div>
       <button class="btn btn-outline" data-id="💬 Chat Baru" data-en="💬 New Chat">💬 Chat Baru</button>
@@ -41,17 +39,6 @@ export function render(container) {
           <div style="font-size:10.5px;color:var(--t4);line-height:1.5" data-id="Mode Benteng: hanya gunakan dok. internal PLN yang terverifikasi." data-en="Fortress Mode: only use verified PLN internal documents.">Mode Benteng: hanya gunakan dok. internal PLN yang terverifikasi.</div>
         </div>
         
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd-n)">
-          <div style="font-size:10px;color:var(--t4);font-family:'IBM Plex Mono',monospace;margin-bottom:6px" data-id="Riwayat Chat" data-en="Chat History">Riwayat Chat</div>
-          <div class="tpl-item" style="padding:7px 9px;margin-bottom:3px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent;transition:all .13s" onmouseover="this.style.background='var(--bl-dim)'" onmouseout="this.style.background=''">
-            <div style="font-size:11.5px;font-weight:600;color:var(--t1)" data-id="Klausul OJK 15/2026" data-en="OJK Clause 15/2026">Klausul OJK 15/2026</div>
-            <div style="font-size:10px;color:var(--t4)">1 jam lalu</div>
-          </div>
-          <div class="tpl-item" style="padding:7px 9px;margin-bottom:3px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent;transition:all .13s" onmouseover="this.style.background='var(--bl-dim)'" onmouseout="this.style.background=''">
-            <div style="font-size:11.5px;font-weight:600;color:var(--t1)" data-id="Analisis kontrak PKS" data-en="PKS contract analysis">Analisis kontrak PKS</div>
-            <div style="font-size:10px;color:var(--t4)" data-id="Kemarin" data-en="Yesterday">Kemarin</div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -65,33 +52,6 @@ export function render(container) {
           </div>
         </div>
         
-        <div class="msg user">
-          <div class="msg-av user">AS</div>
-          <div class="msg-bubble user" data-id="Apa dampak Peraturan OJK No. 15/2026 terhadap kontrak PKS PLN yang sedang berjalan?" data-en="What is the impact of OJK Regulation No. 15/2026 on PLN's currently active PKS contracts?">Apa dampak Peraturan OJK No. 15/2026 terhadap kontrak PKS PLN yang sedang berjalan?</div>
-        </div>
-
-        <div class="msg">
-          <div class="msg-av ai">L</div>
-          <div>
-            <div class="msg-bubble ai">
-              <strong data-id="Berdasarkan analisis saya terhadap POJK 15/2026:" data-en="Based on my analysis of POJK 15/2026:">Berdasarkan analisis saya terhadap POJK 15/2026:</strong>
-              <br/><br/>
-              <span data-id="Peraturan ini berlaku efektif 1 April 2026 dan berdampak pada 3 aspek utama kontrak PLN yang sedang berjalan:" data-en="This regulation takes effect April 1, 2026 and impacts 3 key aspects of PLN's active contracts:">Peraturan ini berlaku efektif 1 April 2026 dan berdampak pada 3 aspek utama kontrak PLN yang sedang berjalan:</span>
-              <br/><br/>
-              <strong>1.</strong> <span data-id="Klausul Pembayaran — wajib menyesuaikan tenor maksimum 60 hari dari sebelumnya 90 hari [Pasal 12 POJK 15/2026]" data-en="Payment Clause — must adjust maximum tenor to 60 days from the previous 90 days [Article 12 POJK 15/2026]">Klausul Pembayaran — wajib menyesuaikan tenor maksimum 60 hari dari sebelumnya 90 hari [Pasal 12 POJK 15/2026]</span><br/>
-              <strong>2.</strong> <span data-id="Kewajiban Pelaporan — transaksi di atas Rp 5 Miliar wajib dilaporkan ke OJK dalam 14 hari kerja" data-en="Reporting Obligations — transactions above Rp 5 Billion must be reported to OJK within 14 working days">Kewajiban Pelaporan — transaksi di atas Rp 5 Miliar wajib dilaporkan ke OJK dalam 14 hari kerja</span><br/>
-              <strong>3.</strong> <span data-id="Klausul Kerahasiaan — perlu diselaraskan dengan ketentuan baru tentang berbagi data di Pasal 22" data-en="Confidentiality Clause — needs alignment with new data sharing provisions in Article 22">Klausul Kerahasiaan — perlu diselaraskan dengan ketentuan baru tentang berbagi data di Pasal 22</span>
-              <br/><br/>
-              <span data-id="Rekomendasi: Lakukan addendum untuk 3 kontrak yang teridentifikasi terdampak sebelum 31 Maret 2026." data-en="Recommendation: Execute addenda for the 3 identified affected contracts before March 31, 2026.">Rekomendasi: Lakukan addendum untuk 3 kontrak yang teridentifikasi terdampak sebelum 31 Maret 2026.</span>
-            </div>
-            <div class="msg-cite" data-id="📎 3 sumber · POJK 15/2026 · Dok. Internal PLN · Hukumonline" data-en="📎 3 sources · POJK 15/2026 · PLN Internal Docs · Hukumonline">📎 3 sumber · POJK 15/2026 · Dok. Internal PLN · Hukumonline</div>
-          </div>
-        </div>
-
-        <div class="msg">
-          <div class="msg-av ai">L</div>
-          <div><div class="typing"><span></span><span></span><span></span></div></div>
-        </div>
       </div>
 
       <div class="chat-input-area">
@@ -118,33 +78,14 @@ export function render(container) {
     <div class="chat-citations">
       <div class="cpanel-head"><div class="cpanel-title" data-id="Sitasi & Referensi" data-en="Citations & References">Sitasi &amp; Referensi</div></div>
       <div class="cpanel-body">
-        <div style="font-size:10px;color:var(--t4);margin-bottom:8px;font-family:'IBM Plex Mono',monospace" data-id="Dari respons terakhir" data-en="From last response">Dari respons terakhir</div>
-        
-        <div class="cite-card">
-          <div class="cite-title">POJK No. 15/2026</div>
-          <div class="cite-src">ojk.go.id</div>
-          <div class="cite-text" data-id="Pasal 12: Tenor pembayaran maksimum 60 hari untuk transaksi yang diatur OJK..." data-en="Article 12: Maximum payment tenor of 60 days for OJK-regulated transactions...">Pasal 12: Tenor pembayaran maksimum 60 hari untuk transaksi yang diatur OJK...</div>
-        </div>
-        
-        <div class="cite-card">
-          <div class="cite-title" data-id="Standar Kontrak PLN 2024" data-en="PLN Contract Standards 2024">Standar Kontrak PLN 2024</div>
-          <div class="cite-src" data-id="Internal PLN" data-en="PLN Internal">Internal PLN</div>
-          <div class="cite-text" data-id="Bagian 4.3: Klausul pembayaran baku PLN mensyaratkan tenor 30–90 hari tergantung jenis pengadaan..." data-en="Section 4.3: PLN standard payment clause requires 30–90 day tenor depending on procurement type...">Bagian 4.3: Klausul pembayaran baku PLN mensyaratkan tenor 30–90 hari tergantung jenis pengadaan...</div>
-        </div>
-        
-        <div class="cite-card">
-          <div class="cite-title" data-id="Analisis Hukumonline" data-en="Hukumonline Analysis">Analisis Hukumonline</div>
-          <div class="cite-src">hukumonline.com</div>
-          <div class="cite-text" data-id="Dampak POJK 15/2026 terhadap kontrak BUMN: aspek addendum yang perlu diperhatikan..." data-en="Impact of POJK 15/2026 on SOE contracts: addendum aspects to note...">Dampak POJK 15/2026 terhadap kontrak BUMN: aspek addendum yang perlu diperhatikan...</div>
-        </div>
-
-        <div style="margin-top:8px">
-          <button class="btn btn-outline" style="width:100%;justify-content:center;font-size:12px" data-id="📋 Ekspor Sitasi" data-en="📋 Export Citations">📋 Ekspor Sitasi</button>
+        <div class="empty-state" style="padding:24px 12px">
+          <div class="empty-ico" style="font-size:22px">📎</div>
+          <div class="empty-title" style="font-size:13px" data-id="Belum ada sitasi" data-en="No citations yet">Belum ada sitasi</div>
+          <div class="empty-sub" data-id="Sitasi akan muncul setelah Anda mengajukan pertanyaan." data-en="Citations will appear after you ask a question.">Sitasi akan muncul setelah Anda mengajukan pertanyaan.</div>
         </div>
       </div>
     </div>
   </div>
-</div>
   `;
 }
 
