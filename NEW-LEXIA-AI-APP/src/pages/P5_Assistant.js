@@ -2,99 +2,112 @@ export const chatBar = false;
 
 export function render(container) {
   container.innerHTML = `
-  <div class="ph ph-assistant">
-    <div>
-      <div class="ph-title ph-title-assistant" data-id="Asisten Legal <em>AI</em>" data-en="AI Legal <em>Assistant</em>">Asisten Legal <em>AI</em></div>
-      <div class="ph-sub" data-id="Jawaban terverifikasi dari regulasi dan yurisprudensi Indonesia" data-en="Verified answers from Indonesian regulations and jurisprudence">Jawaban terverifikasi dari regulasi dan yurisprudensi Indonesia</div>
+  <!-- Minimal Header -->
+  <div class="p5-header">
+    <div class="p5-header-left">
+      <div class="p5-title" data-id="Asisten Legal" data-en="Legal Assistant">Asisten Legal</div>
     </div>
-    <div class="ph-right">
+    <div class="p5-header-right">
       <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
-        </div>
-      <div class="ai-badge"><span class="ai-dot"></span><span data-id="Gemini 1.5 Pro" data-en="Gemini 1.5 Pro">Gemini 1.5 Pro</span></div>
-      <button class="btn btn-outline" data-id="💬 Chat Baru" data-en="💬 New Chat" data-toast="Memulai percakapan baru…">💬 Chat Baru</button>
+        <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
+        <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
+      </div>
+      <button class="btn btn-outline p5-new-chat-btn" data-toast="Memulai percakapan baru…">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3v10M3 8h10"/></svg>
+        <span data-id="Chat Baru" data-en="New Chat">Chat Baru</span>
+      </button>
     </div>
   </div>
 
-  <div class="chat-layout chat-layout-flex">
-    <!-- SOURCES PANEL -->
-    <div class="chat-sources">
-      <button class="panel-toggle toggle-sources" id="toggleSources" title="Toggle Sources" aria-label="Collapse panel">‹</button>
-      <div class="cpanel-head"><div class="cpanel-title" data-id="Sumber Aktif" data-en="Active Sources">Sumber Aktif</div></div>
-      <div class="cpanel-body">
-        <div class="src-hint" data-id="Pilih sumber referensi" data-en="Select reference sources">Pilih sumber referensi</div>
-        <div class="src-tag on"><div class="src-dot src-dot-gr"></div><span class="src-label">JDIH Nasional</span></div>
-        <div class="src-tag on"><div class="src-dot src-dot-gr"></div><span class="src-label">OJK Portal</span></div>
-        <div class="src-tag on"><div class="src-dot src-dot-gr"></div><span class="src-label">Kemenkumham</span></div>
-        <div class="src-tag on"><div class="src-dot src-dot-bl"></div><span class="src-label" data-id="Dok. Internal PLN" data-en="PLN Internal Docs">Dok. Internal PLN</span></div>
-        <div class="src-tag"><div class="src-dot src-dot-muted"></div><span class="src-label">SIPP MA</span></div>
-        <div class="src-tag"><div class="src-dot src-dot-muted"></div><span class="src-label">Hukumonline</span></div>
-        
-        <div class="src-divider">
-          <div class="bt-row bt-row-flush">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" class="bt-icon-muted"><rect x="4" y="7" width="8" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>
-            <span class="bt-lbl bt-lbl-md" data-id="Mode Benteng" data-en="Fortress Mode">Mode Benteng</span>
-            <div class="toggle"></div>
-          </div>
+  <!-- Chat Container -->
+  <div class="p5-chat-container" id="p5ChatContainer">
+
+    <!-- Empty State (centered) -->
+    <div class="p5-empty-state" id="p5EmptyState">
+      <div class="p5-greeting">
+        <div class="p5-greeting-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="10" fill="url(#p5grad)"/>
+            <text x="16" y="21" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="'Playfair Display',serif">L</text>
+            <defs><linearGradient id="p5grad" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#1967D2"/><stop offset="1" stop-color="#4A8EE8"/></linearGradient></defs>
+          </svg>
         </div>
-        <div class="src-note-wrap">
-          <div class="src-note" data-id="Mode Benteng: hanya gunakan dok. internal PLN yang terverifikasi." data-en="Fortress Mode: only use verified PLN internal documents.">Mode Benteng: hanya gunakan dok. internal PLN yang terverifikasi.</div>
-        </div>
-        
+        <div class="p5-greeting-text" data-id="Halo, ada yang bisa saya bantu?" data-en="Hello, how can I help you?">Halo, ada yang bisa saya bantu?</div>
+        <div class="p5-greeting-sub" data-id="Analisis regulasi, tinjauan kontrak, riset yurisprudensi, dan penyusunan opini hukum." data-en="Regulatory analysis, contract review, jurisprudence research, and legal opinion drafting.">Analisis regulasi, tinjauan kontrak, riset yurisprudensi, dan penyusunan opini hukum.</div>
       </div>
     </div>
 
-    <!-- MAIN CHAT -->
-    <div class="chat-main">
-      <div class="chat-messages">
-        <div class="msg">
-          <div class="msg-av ai">L</div>
-          <div>
-            <div class="msg-bubble ai" data-id="Halo, Ahmad! Saya Lexia — asisten hukum AI Anda. Saya dapat membantu analisis regulasi, tinjauan kontrak, riset yurisprudensi, dan penyusunan opini hukum. Semua jawaban saya dilengkapi referensi yang dapat diverifikasi. Apa yang ingin Anda tanyakan hari ini?" data-en="Hello, Ahmad! I'm Lexia — your AI legal assistant. I can help with regulatory analysis, contract review, jurisprudence research, and legal opinion drafting. All my answers include verifiable references. What would you like to ask today?">Halo, Ahmad! Saya Lexia — asisten hukum AI Anda. Saya dapat membantu analisis regulasi, tinjauan kontrak, riset yurisprudensi, dan penyusunan opini hukum. Semua jawaban saya dilengkapi referensi yang dapat diverifikasi. Apa yang ingin Anda tanyakan hari ini?</div>
-          </div>
-        </div>
-        
-      </div>
+    <!-- Messages Area (hidden initially) -->
+    <div class="p5-messages" id="p5Messages"></div>
 
-      <div class="chat-input-area">
-        <div class="chat-inp">
-          <input type="text"
-            aria-label="Ask Lexia about legal topics"
-            data-placeholder-id="Tanya tentang regulasi, kontrak, atau minta draft opini hukum…"
-            data-placeholder-en="Ask about regulations, contracts, or request a legal opinion draft…"
-            placeholder="Tanya tentang regulasi, kontrak, atau minta draft opini hukum…"/>
-          <button class="send-btn send-btn-compact" aria-label="Send">
-            <span data-id="Kirim" data-en="Send">Kirim</span> 
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 8h12M9 4l4 4-4 4"/></svg>
-          </button>
-        </div>
-        <div class="chip-row-assistant">
-          <span class="chip" role="button" tabindex="0" data-id="📄 Analisis kontrak" data-en="📄 Analyze contract" data-action="chip-insert" data-value="Analisis kontrak saya">📄 Analisis kontrak</span>
-          <span class="chip" role="button" tabindex="0" data-id="⚖️ Cek kepatuhan" data-en="⚖️ Check compliance" data-action="chip-insert" data-value="Cek kepatuhan kontrak">⚖️ Cek kepatuhan</span>
-          <span class="chip" role="button" tabindex="0" data-id="✍️ Draft opini" data-en="✍️ Draft opinion" data-action="chip-insert" data-value="Bantu draft opini hukum">✍️ Draft opini</span>
-          <span class="chip" role="button" tabindex="0" data-id="🔍 Cari preseden" data-en="🔍 Find precedent" data-action="chip-insert" data-value="Cari preseden hukum">🔍 Cari preseden</span>
-        </div>
+    <!-- Input Area -->
+    <div class="p5-input-wrap" id="p5InputWrap">
+      <div class="p5-input-box">
+        <input type="text" class="p5-input"
+          aria-label="Ask Lexia about legal topics"
+          data-placeholder-id="Tanya tentang regulasi, kontrak, atau opini hukum…"
+          data-placeholder-en="Ask about regulations, contracts, or legal opinions…"
+          placeholder="Tanya tentang regulasi, kontrak, atau opini hukum…" />
+        <button class="p5-send-btn" aria-label="Send">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M9 4l4 4-4 4"/></svg>
+        </button>
       </div>
-    </div>
-
-    <!-- CITATIONS PANEL -->
-    <div class="chat-citations">
-      <button class="panel-toggle toggle-citations" id="toggleCitations" title="Toggle Citations" aria-label="Collapse panel">›</button>
-      <div class="cpanel-head"><div class="cpanel-title" data-id="Sitasi & Referensi" data-en="Citations & References">Sitasi &amp; Referensi</div></div>
-      <div class="cpanel-body">
-        <div class="empty-state empty-state-cite">
-          <div class="empty-ico empty-ico-cite">📎</div>
-          <div class="empty-title empty-title-cite" data-id="Belum ada sitasi" data-en="No citations yet">Belum ada sitasi</div>
-          <div class="empty-sub" data-id="Sitasi akan muncul setelah Anda mengajukan pertanyaan." data-en="Citations will appear after you ask a question.">Sitasi akan muncul setelah Anda mengajukan pertanyaan.</div>
-        </div>
+      <div class="p5-chips" id="p5Chips">
+        <span class="chip" role="button" tabindex="0" data-action="chip-insert" data-value="Analisis kontrak saya" data-id="📄 Analisis kontrak" data-en="📄 Analyze contract">📄 Analisis kontrak</span>
+        <span class="chip" role="button" tabindex="0" data-action="chip-insert" data-value="Cek kepatuhan kontrak" data-id="⚖️ Cek kepatuhan" data-en="⚖️ Check compliance">⚖️ Cek kepatuhan</span>
+        <span class="chip" role="button" tabindex="0" data-action="chip-insert" data-value="Bantu draft opini hukum" data-id="✍️ Draft opini" data-en="✍️ Draft opinion">✍️ Draft opini</span>
+        <span class="chip" role="button" tabindex="0" data-action="chip-insert" data-value="Cari preseden hukum" data-id="🔍 Cari preseden" data-en="🔍 Find precedent">🔍 Cari preseden</span>
       </div>
+      <div class="p5-input-hint" data-id="Lexia menggunakan AI — verifikasi informasi penting secara mandiri." data-en="Lexia uses AI — verify critical information independently.">Lexia menggunakan AI — verifikasi informasi penting secara mandiri.</div>
     </div>
   </div>
   `;
 }
 
 export function initInteractions(root) {
+  const container = root.querySelector('#p5ChatContainer');
+  const emptyState = root.querySelector('#p5EmptyState');
+  const messages = root.querySelector('#p5Messages');
+  const input = root.querySelector('.p5-input');
+  const sendBtn = root.querySelector('.p5-send-btn');
+  const chips = root.querySelector('#p5Chips');
+  const inputWrap = root.querySelector('#p5InputWrap');
+
+  function sendMessage(text) {
+    if (!text || !text.trim()) return;
+
+    // Transition to conversation mode
+    if (emptyState && !emptyState.classList.contains('hidden')) {
+      emptyState.classList.add('hidden');
+      messages.classList.add('active');
+      container.classList.add('has-messages');
+      chips.classList.add('hidden');
+    }
+
+    // Add user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg user';
+    userMsg.innerHTML = `<div class="msg-bubble user">${text.replace(/</g,'&lt;')}</div><div class="msg-av user">A</div>`;
+    messages.appendChild(userMsg);
+
+    // Add AI response (simulated)
+    setTimeout(() => {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg';
+      const lang = localStorage.getItem('lexia-lang') || 'id';
+      const response = lang === 'id'
+        ? 'Terima kasih atas pertanyaannya. Saya sedang menganalisis berdasarkan regulasi dan yurisprudensi yang berlaku. Fitur ini masih dalam pengembangan — respons lengkap akan tersedia segera.'
+        : 'Thank you for your question. I am analyzing based on applicable regulations and jurisprudence. This feature is still in development — full responses will be available soon.';
+      aiMsg.innerHTML = `<div class="msg-av ai">L</div><div><div class="msg-bubble ai">${response}</div></div>`;
+      messages.appendChild(aiMsg);
+      messages.scrollTop = messages.scrollHeight;
+    }, 800);
+
+    input.value = '';
+    input.focus();
+    messages.scrollTop = messages.scrollHeight;
+  }
+
   // Delegated handlers
   root.addEventListener('click', e => {
     const lang = e.target.closest('[data-lang]');
@@ -103,45 +116,23 @@ export function initInteractions(root) {
     if (toast) { window.showToast(toast.dataset.toast); return; }
     const chip = e.target.closest('[data-action="chip-insert"]');
     if (chip) {
-      const input = root.querySelector('.chat-inp input');
-      if (input) { input.value = chip.dataset.value; input.focus(); }
+      sendMessage(chip.dataset.value);
       return;
     }
   });
 
-  root.querySelectorAll('.bt-row').forEach(r => {
-    r.addEventListener('click', () => {
-      const toggle = r.querySelector('.toggle');
-      if(toggle) toggle.classList.toggle('on')
-    });
-  });
-
-  const ci=root.querySelector('.chat-inp input');
-  if(ci){
-    ci.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey)e.preventDefault();});
-  }
-  const sb=root.querySelector('.send-btn');
-  if(sb){
-    sb.addEventListener('click',function(){
-      if(ci&&ci.value.trim()){ci.value='';ci.focus();}
-    });
+  // Send button
+  if (sendBtn) {
+    sendBtn.addEventListener('click', () => sendMessage(input?.value));
   }
 
-  // Collapsible side panels
-  const chatLayout = root.querySelector('.chat-layout');
-  const btnSrc = root.querySelector('#toggleSources');
-  const btnCite = root.querySelector('#toggleCitations');
-
-  if (btnSrc && chatLayout) {
-    btnSrc.addEventListener('click', function() {
-      chatLayout.classList.toggle('sources-collapsed');
-      this.textContent = chatLayout.classList.contains('sources-collapsed') ? '›' : '‹';
-    });
-  }
-  if (btnCite && chatLayout) {
-    btnCite.addEventListener('click', function() {
-      chatLayout.classList.toggle('citations-collapsed');
-      this.textContent = chatLayout.classList.contains('citations-collapsed') ? '‹' : '›';
+  // Enter key
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage(input.value);
+      }
     });
   }
 
