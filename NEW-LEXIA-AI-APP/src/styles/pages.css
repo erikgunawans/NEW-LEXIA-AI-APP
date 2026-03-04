@@ -772,7 +772,6 @@
   padding: 12px 28px;
   flex-shrink: 0;
   border-bottom: 1px solid var(--bd-n);
-  background: var(--surface);
 }
 .p5-header-right { display: flex; align-items: center; gap: 10px; }
 .p5-title {
