@@ -11,26 +11,39 @@ const LOGO_SRC = '/assets/my-new-logo.png';
 /* ── Nav config ─────────────────────────────────── */
 const NAV_ITEMS = [
   {
+    group: { id: 'Chat', en: 'Chat' },
+    items: [
+      { path: '/assistant',  id: 'Chat Baru',           en: 'New Chat',
+        icon: '<path d="M12 2H4a1 1 0 00-1 1v6a1 1 0 001 1h2.5L8 12l1.5-2H12a1 1 0 001-1V3a1 1 0 00-1-1z"/><path d="M8 5.5v3M6.5 7h3"/>' },
+    ]
+  },
+  {
     group: { id: 'Workspace', en: 'Workspace' },
     items: [
-      { path: '/',           id: 'Dasbor',             en: 'Dashboard',            icon: '<path d="M2 7L8 2l6 5v7h-4v-4H6v4H2V7z"/>' },
-      { path: '/drafting',   id: 'Drafting Dokumen',    en: 'Document Drafting',    icon: '<path d="M3 13V3h7l3 3v7H3zM9.5 3v3H13"/>' },
-      { path: '/compare',    id: 'Perbandingan Legal',  en: 'Legal Comparison',     icon: '<path d="M2 4h5v8H2zM9 4h5v8H9z"/>' },
-      { path: '/compliance', id: 'Kepatuhan Kontrak',   en: 'Contract Compliance',  icon: '<path d="M8 2a6 6 0 100 12A6 6 0 008 2zM8 6v4M8 11v.5"/>' },
+      { path: '/',           id: 'Dasbor',              en: 'Dashboard',
+        icon: '<rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>' },
+      { path: '/drafting',   id: 'Drafting Dokumen',    en: 'Document Drafting',
+        icon: '<path d="M4 2h5.5L12 5v8a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M9.5 2v3.5H12"/><path d="M5.5 8.5h5M5.5 11h3"/>' },
+      { path: '/compare',    id: 'Perbandingan Legal',  en: 'Legal Comparison',
+        icon: '<path d="M8 3v10M5 13h6"/><path d="M3 6.5l1.8 3.5H1.2L3 6.5z"/><path d="M13 6.5l1.8 3.5h-3.6L13 6.5z"/><path d="M3 6.5h10"/>' },
+      { path: '/compliance', id: 'Kepatuhan Kontrak',   en: 'Contract Compliance',
+        icon: '<path d="M8 2L3 4.2v3.9c0 2.8 2.1 4.9 5 5.9 2.9-1 5-3.1 5-5.9V4.2L8 2z"/><path d="M5.5 8l2 2 3-3"/>' },
     ]
   },
   {
     group: { id: 'AI Tools', en: 'AI Tools' },
     items: [
-      { path: '/assistant',  id: 'Asisten Legal',       en: 'Legal Assistant',      icon: '<path d="M13 8.5a5 5 0 11-10 0A5 5 0 0113 8.5zM10.5 12.5l2.5 2.5"/>' },
-      { path: '/research',   id: 'Riset & Temuan',      en: 'Research & Findings',  icon: '<path d="M6.5 2a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM11.5 11.5l3 3"/>' },
-      { path: '/radar',      id: 'Radar Regulasi',      en: 'Regulatory Radar',     icon: '<path d="M8 2a6 6 0 100 12A6 6 0 008 2zM8 5v3.5l2.5 1.5"/>', dot: true },
+      { path: '/research',   id: 'Riset & Temuan',      en: 'Research & Findings',
+        icon: '<circle cx="7" cy="7" r="4.5"/><path d="M12.5 12.5l2.5 2.5"/>' },
+      { path: '/radar',      id: 'Radar Regulasi',      en: 'Regulatory Radar',
+        icon: '<circle cx="8" cy="13" r="1.5"/><path d="M5.5 10.5a3.5 3.5 0 015 0"/><path d="M3 8a7 7 0 0110 0"/>', dot: true },
     ]
   },
   {
     group: { id: 'Administrasi', en: 'Administration' },
     items: [
-      { path: '/matters',    id: 'Perkara & Audit',     en: 'Case & Audit',         icon: '<path d="M2 4h12v10H2zM5 4V3a3 3 0 016 0v1"/>' },
+      { path: '/matters',    id: 'Perkara & Audit',     en: 'Case & Audit',
+        icon: '<rect x="2" y="5" width="12" height="9" rx="1.2"/><path d="M6 5V4a2 2 0 014 0v1"/><path d="M5 9.5l2 2 4-3"/>' },
     ]
   }
 ];
@@ -41,7 +54,7 @@ const HISTORY_DATA = {
     { icon: '📊', title: 'Laporan Eksekutif Q4 2025',      time_id: '2j lalu',      time_en: '2h ago' },
     { icon: '📄', title: 'KPI Legal Review Jan 2026',      time_id: '5j lalu',      time_en: '5h ago' },
     { icon: '🔍', title: 'Audit Kepatuhan Februari',       time_id: 'Kemarin',      time_en: 'Yesterday' },
-    { icon: '📋', title: 'Brief PLN Q1 2026',              time_id: '2 hari lalu',  time_en: '2 days ago' },
+    { icon: '📋', title: 'Brief Perusahaan Q1 2026',        time_id: '2 hari lalu',  time_en: '2 days ago' },
   ],
   '/drafting': [
     { icon: '📝', title: 'PKS-Vendor-IT-2026.docx',        time_id: '1j lalu',      time_en: '1h ago' },
@@ -53,7 +66,7 @@ const HISTORY_DATA = {
     { icon: '⇄',  title: 'PKS-Turbin v1.0 vs v2.1',       time_id: '30m lalu',     time_en: '30m ago' },
     { icon: '⇄',  title: 'NDA-Mitra Rev A vs B',           time_id: '2j lalu',      time_en: '2h ago' },
     { icon: '⇄',  title: 'KSO-Distribusi 2025 vs 2026',    time_id: 'Kemarin',      time_en: 'Yesterday' },
-    { icon: '⇄',  title: 'Standar PLN vs OJK POJK',        time_id: '4 hari lalu',  time_en: '4 days ago' },
+    { icon: '⇄',  title: 'Standar Perusahaan vs OJK POJK',  time_id: '4 hari lalu',  time_en: '4 days ago' },
   ],
   '/compliance': [
     { icon: '⚠️', title: 'PKS-Pengadaan-Turbin.pdf',       time_id: '27 Feb',       time_en: 'Feb 27' },
@@ -124,7 +137,7 @@ export function renderSidebar(activePath) {
       <div class="sb-av">AS</div>
       <div class="sb-user-text">
         <div class="sb-name">Ahmad Santoso</div>
-        <div class="sb-role" data-id="Divisi Hukum · PLN" data-en="Legal Division · PLN">Divisi Hukum · PLN</div>
+        <div class="sb-role" data-id="Divisi Hukum · Perusahaan" data-en="Legal Division · Company">Divisi Hukum · Perusahaan</div>
       </div>
       <svg class="sb-user-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"
            style="color:var(--t4);margin-left:auto;flex-shrink:0"><path d="M2 4l3 3 3-3"/></svg>
@@ -135,7 +148,7 @@ export function renderSidebar(activePath) {
         <div class="nav-lbl" data-id="${section.group.id}" data-en="${section.group.en}">${section.group.id}</div>
         ${section.items.map(item => `
           <div class="nav-item${item.path === activePath ? ' active' : ''}" data-navigate="${item.path}" title="${item.id}" role="button" tabindex="0">
-            <span class="nav-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7">${item.icon}</svg></span>
+            <span class="nav-ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${item.icon}</svg></span>
             <span class="nav-label" data-id="${item.id}" data-en="${item.en}">${item.id}</span>
             ${item.dot ? '<span class="nav-dot"></span>' : ''}
           </div>
@@ -143,21 +156,16 @@ export function renderSidebar(activePath) {
       `).join('')}
     </nav>
 
-    <!-- ── Conversation History ── -->
-    <div class="sb-history collapsed" id="sbHistory">
-      <div class="sh-hd" id="shToggle">
-        <div style="display:flex;align-items:center;gap:7px">
-          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--t5);flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.2l2 1.4"/></svg>
-          <span class="sh-lbl" data-id="Riwayat Percakapan" data-en="Conversation History">Riwayat Percakapan</span>
-        </div>
-        <svg class="sh-chevron" id="shChevron" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.7" style="transform:rotate(-90deg)"><path d="M2 3.5l3 3 3-3"/></svg>
-      </div>
-      <div class="sh-list" id="shList">
-        ${renderHistoryItems(activePath)}
-      </div>
-    </div>
-
     <div class="sb-footer">
+      <div class="bt-row">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"
+             style="color:var(--t3);flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2c-2 2.5-2 9.5 0 12M8 2c2 2.5 2 9.5 0 12"/></svg>
+        <span class="bt-lbl" data-id="Bahasa" data-en="Language">Bahasa</span>
+        <div class="lang-toggle sb-lang-toggle">
+          <button class="lang-btn active" id="btnID" data-lang="id">ID</button>
+          <button class="lang-btn" id="btnEN" data-lang="en">EN</button>
+        </div>
+      </div>
       <div class="bt-row">
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"
              style="color:var(--t3);flex-shrink:0"><rect x="4" y="7" width="8" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2"/></svg>
@@ -176,6 +184,7 @@ export function renderSidebar(activePath) {
     const nav = e.target.closest('[data-navigate]');
     if (nav) {
       e.preventDefault();
+      if (nav.dataset.navigate === '/login') sessionStorage.removeItem('lexia-auth');
       window.navigate(nav.dataset.navigate);
     }
   });
@@ -186,6 +195,7 @@ export function renderSidebar(activePath) {
       const nav = e.target.closest('[data-navigate]');
       if (nav) {
         e.preventDefault();
+        if (nav.dataset.navigate === '/login') sessionStorage.removeItem('lexia-auth');
         window.navigate(nav.dataset.navigate);
       }
     }
@@ -199,6 +209,14 @@ export function renderSidebar(activePath) {
     _minimized = !_minimized;
     aside.classList.toggle('minimized', _minimized);
     collapseIco.style.transform = _minimized ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+
+  /* ── Language toggle ── */
+  const langBtns = aside.querySelectorAll('[data-lang]');
+  langBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (window.setLang) window.setLang(btn.dataset.lang);
+    });
   });
 
   /* ── History toggle interaction ── */

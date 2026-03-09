@@ -1,19 +1,18 @@
+export const chatBar = false;
+
 export function render(container) {
   container.innerHTML = `
+  <div class="p5-wrap">
   <div class="main-scroll">
 
     <!-- PAGE HEADER -->
     <div class="ph">
       <div>
         <div class="ph-title" data-id="Analisis <em>Kepatuhan</em> Kontrak" data-en="Contract <em>Compliance</em> Analysis">Analisis <em>Kepatuhan</em> Kontrak</div>
-        <div class="ph-sub" data-id="Verifikasi kontrak terhadap kebijakan internal dan regulasi yang berlaku secara otomatis." data-en="Automatically verify contracts against internal policies and applicable regulations.">Verifikasi kontrak terhadap kebijakan internal dan regulasi yang berlaku secara otomatis.</div>
+        <div class="ph-sub" data-id="Validasi setiap klausul kontrak terhadap regulasi dan standar internal secara otomatis." data-en="Automatically validate every contract clause against regulations and internal standards.">Validasi setiap klausul kontrak terhadap regulasi dan standar internal secara otomatis.</div>
       </div>
       <div class="flex-center" style="gap:8px">
         <span style="font-size:12px;color:var(--t3)"><span data-id="Kapasitas:" data-en="Capacity:">Kapasitas:</span> <strong style="color:var(--t2)">200 <span data-id="Dokumen" data-en="Documents">Dokumen</span></strong></span>
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
-        </div>
         <button class="btn btn-outline btn-sm" data-id="📄 Riwayat" data-en="📄 History" data-toast="Riwayat analisis segera hadir">📄 Riwayat</button>
       </div>
     </div>
@@ -32,9 +31,9 @@ export function render(container) {
 
       <!-- SINGLE MODE -->
       <div id="singleMode">
-        <div class="upload-zone" id="singleZone" data-action="simulateUpload" style="margin-bottom:18px">
-          <div class="uz-icon" style="color:var(--t4)">☁</div>
-          <div class="uz-main" style="color:var(--t3)" data-id="Seret &amp; Lepas Kontrak Anda" data-en="Drag &amp; Drop Your Contract">Seret &amp; Lepas Kontrak Anda</div>
+        <div class="upload-zone" id="singleZone" data-action="simulateUpload">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="opacity:.55;margin-bottom:10px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="uz-main" data-id="Seret &amp; Lepas Kontrak Anda" data-en="Drag &amp; Drop Your Contract">Seret &amp; Lepas Kontrak Anda</div>
           <div class="uz-sub" data-id="atau <span class='uz-link'>pilih dari komputer</span>" data-en="or <span class='uz-link'>choose from computer</span>">atau <span class="uz-link">pilih dari komputer</span></div>
           <div class="uz-spec" data-id="PDF, DOCX, DOC · Maks. 100MB per dokumen" data-en="PDF, DOCX, DOC · Max. 100MB per document">PDF, DOCX, DOC · Maks. 100MB per dokumen</div>
         </div>
@@ -56,19 +55,7 @@ export function render(container) {
         </div>
       </div>
 
-      <!-- Policy Selector -->
-      <div style="background:var(--surface2);border:1px solid var(--bd-n);border-radius:var(--r-sm);padding:16px 18px;margin-bottom:18px">
-        <div class="font-mono-label" style="margin-bottom:12px" data-id="Bandingkan terhadap standar:" data-en="Compare against standards:">Bandingkan terhadap standar:</div>
-        <div class="policy-grid" id="policyGrid">
-          <div class="policy-item checked" data-action="togglePolicy" role="button" tabindex="0"><input type="checkbox" checked data-action="stopPropagation"/><div><div class="policy-name" data-id="Standar Internal PLN 2025" data-en="PLN Internal Standards 2025">Standar Internal PLN 2025</div><div class="policy-src" data-id="78 klausul dipantau" data-en="78 clauses monitored">78 klausul dipantau</div></div></div>
-          <div class="policy-item checked" data-action="togglePolicy" role="button" tabindex="0"><input type="checkbox" checked data-action="stopPropagation"/><div><div class="policy-name">OJK POJK 2024</div><div class="policy-src" data-id="45 klausul dipantau" data-en="45 clauses monitored">45 klausul dipantau</div></div></div>
-          <div class="policy-item" data-action="togglePolicy" role="button" tabindex="0"><input type="checkbox" data-action="stopPropagation"/><div><div class="policy-name">UU No.30/2009</div><div class="policy-src" data-id="32 klausul dipantau" data-en="32 clauses monitored">32 klausul dipantau</div></div></div>
-          <div class="policy-item" data-action="togglePolicy" role="button" tabindex="0"><input type="checkbox" data-action="stopPropagation"/><div><div class="policy-name" data-id="ISO 27001 — Keamanan Data" data-en="ISO 27001 — Data Security">ISO 27001 — Keamanan Data</div><div class="policy-src" data-id="20 klausul dipantau" data-en="20 clauses monitored">20 klausul dipantau</div></div></div>
-        </div>
-        <div style="margin-top:10px"><span style="font-size:12px;color:var(--bl);cursor:pointer;font-weight:500" data-id="+ Tambahkan Standar Kustom" data-en="+ Add Custom Standard" data-toast="Fitur standar kustom segera hadir">+ Tambahkan Standar Kustom</span></div>
-      </div>
-
-      <button class="btn btn-bl btn-full" id="analyzeBtn" data-action="runAnalysis" style="padding:10px 20px;font-size:13px">
+      <button class="btn btn-bl btn-full" id="analyzeBtn" data-action="runAnalysis" style="padding:10px 20px;font-size:13px;margin-top:20px">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M8 2v3M8 11v3M2 8h3M11 8h3"/><circle cx="8" cy="8" r="2.5"/></svg>
         <span id="analyzeBtnLbl" data-id="Mulai Analisis Kepatuhan" data-en="Start Compliance Analysis">Mulai Analisis Kepatuhan</span>
       </button>
@@ -109,7 +96,7 @@ export function render(container) {
         <!-- Progress bars -->
         <div style="padding:14px 22px;border-top:1px solid var(--bd-n);display:grid;grid-template-columns:1fr 1fr;gap:14px;background:var(--surface2)">
           <div>
-            <div class="flex-between" style="font-size:11.5px;margin-bottom:4px"><span style="color:var(--t2);font-weight:500" data-id="Standar PLN 2025" data-en="PLN Standards 2025">Standar PLN 2025</span><span style="color:var(--am);font-weight:600">68%</span></div>
+            <div class="flex-between" style="font-size:11.5px;margin-bottom:4px"><span style="color:var(--t2);font-weight:500" data-id="Standar Perusahaan 2025" data-en="Company Standards 2025">Standar Perusahaan 2025</span><span style="color:var(--am);font-weight:600">68%</span></div>
             <div class="prog-bar"><div class="prog-fill" style="width:68%;background:var(--am)"></div></div>
           </div>
           <div>
@@ -124,7 +111,7 @@ export function render(container) {
         <!-- Detail table -->
         <div class="card" style="overflow:hidden">
           <div class="flex-between" style="padding:13px 18px;border-bottom:1px solid var(--bd-n);background:var(--surface2)">
-            <div class="heading-serif" data-id="Detail Klausul" data-en="Clause Details">Detail Klausul</div>
+            <div class="heading-serif" data-id="Analisis Klausul" data-en="Clause Analysis">Analisis Klausul</div>
             <select class="btn btn-outline btn-sm" style="cursor:pointer">
               <option data-id="Semua Klausul" data-en="All Clauses">Semua Klausul</option>
               <option data-id="Tidak Patuh Saja" data-en="Non-Compliant Only">Tidak Patuh Saja</option>
@@ -145,7 +132,7 @@ export function render(container) {
                   <td><div class="text-clause-title">Pasal 3</div><div class="text-clause-sub" data-id="Jangka Waktu" data-en="Duration">Jangka Waktu</div></td>
                   <td><span class="badge b-gr" data-id="✅ Patuh" data-en="✅ Compliant">✅ Patuh</span><div class="text-clause-desc" data-id="Durasi 12 bulan dengan opsi perpanjangan tertulis" data-en="12-month duration with written extension option">Durasi 12 bulan dengan opsi perpanjangan tertulis</div></td>
                   <td><span class="badge b-gr" data-id="🟢 Rendah" data-en="🟢 Low">🟢 Rendah</span></td>
-                  <td><span class="font-mono-sm">PLN-STD Ps.7</span></td>
+                  <td><span class="font-mono-sm">Co-STD Ps.7</span></td>
                   <td><button class="btn btn-outline btn-sm" data-id="Lihat" data-en="View" data-toast="Detail klausul segera hadir">Lihat</button></td>
                 </tr>
 
@@ -165,7 +152,7 @@ export function render(container) {
                   <td><div class="text-clause-title">Pasal 12</div><div class="text-clause-sub" data-id="Ganti Rugi" data-en="Liability">Ganti Rugi</div></td>
                   <td><span class="badge b-re" data-id="❌ Tidak Patuh" data-en="❌ Non-Compliant">❌ Tidak Patuh</span><div class="text-clause-desc" data-id="Tidak ada liability cap — eksposur finansial tidak terbatas" data-en="No liability cap — unlimited financial exposure">Tidak ada liability cap — eksposur finansial tidak terbatas</div></td>
                   <td><span class="badge b-re" data-id="🔴 Kritis" data-en="🔴 Critical">🔴 Kritis</span></td>
-                  <td><span class="font-mono-sm">PLN-STD Ps.4</span></td>
+                  <td><span class="font-mono-sm">Co-STD Ps.4</span></td>
                   <td><button class="btn btn-re btn-sm" data-action="toggleNextRow" data-id="Perbaiki →" data-en="Fix →">Perbaiki →</button></td>
                 </tr>
                 <tr id="cd2" style="display:none"><td colspan="5" style="padding:12px 16px !important;background:var(--bl-dim)">
@@ -177,7 +164,7 @@ export function render(container) {
                   <td><div class="text-clause-title">Pasal 15</div><div class="text-clause-sub" data-id="Pilihan Hukum" data-en="Choice of Law">Pilihan Hukum</div></td>
                   <td><span class="badge b-am" data-id="⚠️ Berisiko" data-en="⚠️ At Risk">⚠️ Berisiko</span><div class="text-clause-desc" data-id="Yurisdiksi tidak spesifik — perlu diperjelas" data-en="Jurisdiction not specific — needs clarification">Yurisdiksi tidak spesifik — perlu diperjelas</div></td>
                   <td><span class="badge b-am" data-id="🟠 Tinggi" data-en="🟠 High">🟠 Tinggi</span></td>
-                  <td><span class="font-mono-sm">PLN-STD Ps.11</span></td>
+                  <td><span class="font-mono-sm">Co-STD Ps.11</span></td>
                   <td><button class="btn btn-am btn-sm" data-action="toggleNextRow" data-id="Tinjau →" data-en="Review →">Tinjau →</button></td>
                 </tr>
                 <tr id="cd3" style="display:none"><td colspan="5" style="padding:12px 16px !important;background:var(--bl-dim)">
@@ -234,6 +221,7 @@ export function render(container) {
     </div>
 
   </div><!-- /main-scroll -->
+  </div><!-- /p5-wrap -->
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loadingOverlay" style="display:none">
@@ -243,7 +231,7 @@ export function render(container) {
     <div class="text-muted-sm" style="font-size:12px;margin-top:5px" data-id="AI sedang memverifikasi setiap klausul" data-en="AI is verifying each clause">AI sedang memverifikasi setiap klausul</div>
     <div id="lSteps" style="margin-top:14px">
       <div class="l-step active" id="ls1" data-id="⟳ Mengekstrak klausul dari dokumen..." data-en="⟳ Extracting clauses from document...">⟳ Mengekstrak klausul dari dokumen...</div>
-      <div class="l-step" id="ls2" data-id="○ Mencocokkan dengan standar PLN 2025..." data-en="○ Matching against PLN 2025 standards...">○ Mencocokkan dengan standar PLN 2025...</div>
+      <div class="l-step" id="ls2" data-id="○ Mencocokkan dengan standar perusahaan 2025..." data-en="○ Matching against Company 2025 standards...">○ Mencocokkan dengan standar perusahaan 2025...</div>
       <div class="l-step" id="ls3" data-id="○ Mencocokkan dengan OJK POJK 2024..." data-en="○ Matching against OJK POJK 2024...">○ Mencocokkan dengan OJK POJK 2024...</div>
       <div class="l-step" id="ls4" data-id="○ Menilai tingkat risiko setiap klausul..." data-en="○ Assessing risk level of each clause...">○ Menilai tingkat risiko setiap klausul...</div>
       <div class="l-step" id="ls5" data-id="○ Menghasilkan saran redline AI..." data-en="○ Generating AI redline suggestions...">○ Menghasilkan saran redline AI...</div>

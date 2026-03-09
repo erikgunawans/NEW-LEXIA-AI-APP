@@ -8,15 +8,11 @@ export function render(container) {
     <!-- ─── STATIC PAGE HEADER ─── -->
     <div class="ph">
       <div>
-        <div class="ph-title" data-id="Bandingkan Dua <em>Dokumen</em>" data-en="Compare Two <em>Documents</em>">Bandingkan Dua <em>Dokumen</em></div>
-        <div class="ph-sub" data-id="Diff otomatis dengan redline AI untuk menemukan perbedaan material" data-en="Automatic diff with AI redline to find material differences">Diff otomatis dengan redline AI untuk menemukan perbedaan material</div>
+        <div class="ph-title" data-id="Perbandingan <em>Dokumen Legal</em>" data-en="Legal <em>Document</em> Comparison">Perbandingan <em>Dokumen Legal</em></div>
+        <div class="ph-sub" data-id="Identifikasi perbedaan material secara otomatis dengan redline berbasis AI" data-en="Automatically identify material differences with AI-powered redline">Identifikasi perbedaan material secara otomatis dengan redline berbasis AI</div>
       </div>
       <div class="ph-right">
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
-        </div>
-        <button class="btn btn-outline" id="cmpBtnUpload" data-action="resetComparison" data-id="📁 Upload Dokumen" data-en="📁 Upload Documents">📁 Upload Dokumen</button>
+        <button class="btn btn-outline" id="cmpBtnUpload" style="display:none" data-action="resetComparison" data-id="↺ Bandingkan Ulang" data-en="↺ Compare Again">↺ Bandingkan Ulang</button>
         <button class="btn btn-bl" id="cmpBtnExport" style="display:none" data-id="⬇ Ekspor Redline" data-en="⬇ Export Redline" data-toast="Mengunduh redline dokumen…">⬇ Ekspor Redline</button>
       </div>
     </div>
@@ -192,7 +188,7 @@ export function render(container) {
         <div class="ch" style="margin-bottom:14px">
           <div>
             <div class="ch-title" data-id="Analisis AI — Temuan Material" data-en="AI Analysis — Material Findings">Analisis AI — Temuan Material</div>
-            <div class="ch-sub" data-id="Perubahan yang berpotensi berdampak signifikan pada PLN" data-en="Changes potentially having significant impact on PLN">Perubahan yang berpotensi berdampak signifikan pada PLN</div>
+            <div class="ch-sub" data-id="Perubahan yang berpotensi berdampak signifikan pada perusahaan" data-en="Changes potentially having significant impact on the company">Perubahan yang berpotensi berdampak signifikan pada perusahaan</div>
           </div>
           <button class="btn btn-outline btn-sm" data-id="📋 Ekspor Analisis" data-en="📋 Export Analysis" data-toast="Mengunduh analisis perbandingan…">📋 Ekspor Analisis</button>
         </div>
@@ -203,11 +199,11 @@ export function render(container) {
           </div>
           <div class="status-card-am">
             <div class="status-card-hd" style="color:var(--am)"><span>🟠</span><span data-id="Perhatian" data-en="Attention">Perhatian</span></div>
-            <div class="text-body-sm" data-id="Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART PLN." data-en="12-month duration extension requires Board of Commissioners approval per PLN Articles of Association.">Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART PLN.</div>
+            <div class="text-body-sm" data-id="Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART perusahaan." data-en="12-month duration extension requires Board of Commissioners approval per the company's Articles of Association.">Perpanjangan durasi 12 bulan membutuhkan persetujuan Dewan Komisaris sesuai AD/ART perusahaan.</div>
           </div>
           <div class="status-card-gr">
             <div class="status-card-hd" style="color:var(--gr)"><span>🟢</span><span data-id="Positif" data-en="Positive">Positif</span></div>
-            <div class="text-body-sm" data-id="Denda diperjelas dengan cap 5% — lebih melindungi PLN dari eksposur denda tidak terbatas." data-en="Penalty cap at 5% clarified — better protects PLN from unlimited penalty exposure.">Denda diperjelas dengan cap 5% — lebih melindungi PLN dari eksposur denda tidak terbatas.</div>
+            <div class="text-body-sm" data-id="Denda diperjelas dengan cap 5% — lebih melindungi perusahaan dari eksposur denda tidak terbatas." data-en="Penalty cap at 5% clarified — better protects the company from unlimited penalty exposure.">Denda diperjelas dengan cap 5% — lebih melindungi perusahaan dari eksposur denda tidak terbatas.</div>
           </div>
         </div>
       </div></div>

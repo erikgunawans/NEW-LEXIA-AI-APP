@@ -109,7 +109,7 @@ export function initInteractions(root) {
     form.addEventListener('submit', e => {
       e.preventDefault();
       sessionStorage.setItem('lexia-auth', '1');
-      window.navigate('/');
+      window.navigate('/assistant');
     });
   }
 
@@ -129,7 +129,7 @@ export function initInteractions(root) {
   if (sso) {
     sso.addEventListener('click', () => {
       sessionStorage.setItem('lexia-auth', '1');
-      window.navigate('/');
+      window.navigate('/assistant');
     });
   }
 

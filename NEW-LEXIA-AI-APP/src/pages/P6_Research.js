@@ -1,3 +1,5 @@
+export const chatBar = false;
+
 /* ── Shared simulated database data ─────────────────────── */
 const REGULATION_DATABASES = [
   {
@@ -26,10 +28,10 @@ const REGULATION_DATABASES = [
   },
   {
     id: 'db-4',
-    name_id: 'Standar Internal PLN',
-    name_en: 'PLN Internal Standards',
-    desc_id: 'Kebijakan pengadaan, kontrak, kepatuhan, dan tata kelola internal PLN.',
-    desc_en: 'Procurement, contract, compliance, and internal governance policies of PLN.',
+    name_id: 'Standar Internal Perusahaan',
+    name_en: 'Company Internal Standards',
+    desc_id: 'Kebijakan pengadaan, kontrak, kepatuhan, dan tata kelola internal perusahaan.',
+    desc_en: 'Procurement, contract, compliance, and internal governance policies of the company.',
     docCount: 156, type: 'default', updated: '26 Feb 2026', createdBy: 'Lexia AI', size: '580 MB'
   },
   {
@@ -71,9 +73,9 @@ const SAMPLE_DOCS = {
     { name: 'Putusan PK No. 78/PK/Pdt/2025', size: '1.3 MB', date: '15 Nov 2025' },
   ],
   'db-4': [
-    { name: 'PLN-STD-2025 — Standar Pengadaan Barang & Jasa', size: '5.2 MB', date: '1 Jan 2025' },
-    { name: 'PLN-GOV-2025 — Tata Kelola Perusahaan', size: '3.8 MB', date: '15 Jan 2025' },
-    { name: 'PLN-CPL-2025 — Pedoman Kepatuhan Internal', size: '2.1 MB', date: '1 Feb 2025' },
+    { name: 'Co-STD-2025 — Standar Pengadaan Barang & Jasa', size: '5.2 MB', date: '1 Jan 2025' },
+    { name: 'Co-GOV-2025 — Tata Kelola Perusahaan', size: '3.8 MB', date: '15 Jan 2025' },
+    { name: 'Co-CPL-2025 — Pedoman Kepatuhan Internal', size: '2.1 MB', date: '1 Feb 2025' },
   ],
   'db-5': [
     { name: 'PKS-Turbin-Gas-Siemens-2025.pdf', size: '2.4 MB', date: '10 Jan 2025' },
@@ -94,13 +96,9 @@ export function render(container) {
     <div class="ph">
       <div>
         <div class="ph-title" data-id="Riset &amp; <em>Temuan</em>" data-en="Research &amp; <em>Findings</em>">Riset &amp; <em>Temuan</em></div>
-        <div class="ph-sub" data-id="Pencarian semantik di seluruh regulasi, putusan, dan dokumen internal PLN" data-en="Semantic search across regulations, rulings, and PLN internal documents">Pencarian semantik di seluruh regulasi, putusan, dan dokumen internal PLN</div>
+        <div class="ph-sub" data-id="Telusuri regulasi, putusan, dan dokumen internal PLN dengan pencarian semantik berbasis AI" data-en="Search regulations, rulings, and PLN internal documents with AI-powered semantic search">Telusuri regulasi, putusan, dan dokumen internal PLN dengan pencarian semantik berbasis AI</div>
       </div>
       <div class="ph-right">
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
-        </div>
         <button class="btn btn-outline" data-id="📋 Riwayat Riset" data-en="📋 Research History" data-toast="Riwayat riset segera hadir">📋 Riwayat Riset</button>
         <button class="btn btn-bl" data-id="✨ Riset Mendalam AI" data-en="✨ AI Deep Research" data-toast="Memulai riset mendalam AI…">✨ Riset Mendalam AI</button>
       </div>
@@ -124,7 +122,7 @@ export function render(container) {
       <span class="filter-chip" role="button" tabindex="0" data-id="Regulasi OJK" data-en="OJK Regulations">Regulasi OJK</span>
       <span class="filter-chip" role="button" tabindex="0" data-id="JDIH" data-en="JDIH">JDIH</span>
       <span class="filter-chip" role="button" tabindex="0" data-id="Putusan MA" data-en="Supreme Court">Putusan MA</span>
-      <span class="filter-chip" role="button" tabindex="0" data-id="Internal PLN" data-en="PLN Internal">Internal PLN</span>
+      <span class="filter-chip" role="button" tabindex="0" data-id="Internal Perusahaan" data-en="Company Internal">Internal Perusahaan</span>
       <span class="filter-chip" role="button" tabindex="0" data-id="2025–2026" data-en="2025–2026">2025–2026</span>
     </div>
 
@@ -133,7 +131,7 @@ export function render(container) {
       <div class="regdb-header">
         <div>
           <div class="regdb-title" data-id="Database Regulasi" data-en="Regulation Databases">Database Regulasi</div>
-          <div class="regdb-subtitle" data-id="Kelola database regulasi Lexia Default dan Kustom" data-en="Manage Lexia Default and Custom regulation databases">Kelola database regulasi Lexia Default dan Kustom</div>
+          <div class="regdb-subtitle" data-id="Kelola sumber data regulasi internal dan publik yang digunakan seluruh modul" data-en="Manage internal and public regulation data sources used across all modules">Kelola sumber data regulasi internal dan publik yang digunakan seluruh modul</div>
         </div>
         <div class="flex-row-gap8-center">
           <div class="regdb-filter-pills">
@@ -270,26 +268,28 @@ export function initInteractions(root) {
     grid.innerHTML = filtered.map(db => {
       const name = lang === 'en' ? db.name_en : db.name_id;
       const desc = lang === 'en' ? db.desc_en : db.desc_id;
-      const badgeClass = db.type === 'default' ? 'b-bl' : 'b-gr';
-      const badgeText_id = db.type === 'default' ? 'Lexia Default' : 'Kustom';
-      const badgeText_en = db.type === 'default' ? 'Lexia Default' : 'Custom';
+      const isDefault = db.type === 'default';
+      const badgeClass = isDefault ? 'b-bl' : 'b-gr';
+      const badgeText_id = isDefault ? 'Lexia Default' : 'Kustom';
+      const badgeText_en = isDefault ? 'Lexia Default' : 'Custom';
       const docsLabel = lang === 'en' ? 'docs' : 'dokumen';
+      const typeClass = isDefault ? 'type-default' : 'type-custom';
 
       return `
-        <div class="regdb-card" data-action="openDbModal" data-db-id="${db.id}">
+        <div class="regdb-card ${typeClass}" data-action="openDbModal" data-db-id="${db.id}">
           <div class="regdb-card-top">
-            <div class="regdb-card-icon">${db.type === 'default' ? '📚' : '📁'}</div>
+            <div class="regdb-card-icon">${isDefault ? '📚' : '📁'}</div>
             <span class="badge ${badgeClass}" data-id="${badgeText_id}" data-en="${badgeText_en}">${lang === 'en' ? badgeText_en : badgeText_id}</span>
           </div>
           <div class="regdb-card-name" data-id="${db.name_id}" data-en="${db.name_en}">${name}</div>
           <div class="regdb-card-desc" data-id="${db.desc_id}" data-en="${db.desc_en}">${desc}</div>
           <div class="regdb-card-meta">
-            <span class="flex-row-gap4-center">
-              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 13V3h7l3 3v7H3zM9.5 3v3H13"/></svg>
+            <span style="display:inline-flex;align-items:center;gap:3px">
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 13V3h7l3 3v7H3zM9.5 3v3H13"/></svg>
               ${db.docCount} <span data-id="dokumen" data-en="docs">${docsLabel}</span>
             </span>
             <span>${db.size}</span>
-            <span>${db.updated}</span>
+            <span style="margin-left:auto">${db.updated}</span>
           </div>
         </div>`;
     }).join('');
@@ -307,7 +307,7 @@ export function initInteractions(root) {
   });
 
   // ── Modal document list rendering ──────────────
-  function renderModalDocList(db, lang) {
+  function renderModalDocList(db) {
     const body = document.getElementById('regdbModalBody');
     if (!body) return;
     const docs = SAMPLE_DOCS[db.id] || [];
@@ -360,7 +360,7 @@ export function initInteractions(root) {
     const delBtn = document.getElementById('regdbModalDeleteBtn');
     if (delBtn) delBtn.style.display = db.type === 'default' ? 'none' : '';
 
-    renderModalDocList(db, lang);
+    renderModalDocList(db);
 
     const modal = document.getElementById('regdbModal');
     if (modal) modal.style.display = 'flex';

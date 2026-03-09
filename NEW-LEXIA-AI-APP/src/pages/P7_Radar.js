@@ -1,16 +1,14 @@
+export const chatBar = false;
+
 export function render(container) {
   container.innerHTML = `
   <div class="main-scroll">
     <div class="ph">
       <div>
         <div class="ph-title" data-id="Radar <em>Regulasi</em>" data-en="Regulatory <em>Radar</em>">Radar <em>Regulasi</em></div>
-        <div class="ph-sub" data-id="Pemantauan real-time perubahan regulasi dan analisis dampak terhadap kontrak PLN" data-en="Real-time monitoring of regulatory changes and impact analysis on PLN contracts">Pemantauan real-time perubahan regulasi dan analisis dampak terhadap kontrak PLN</div>
+        <div class="ph-sub" data-id="Pantau perubahan regulasi secara real-time dan analisis dampaknya terhadap kontrak perusahaan" data-en="Monitor regulatory changes in real-time and analyze their impact on company contracts">Pantau perubahan regulasi secara real-time dan analisis dampaknya terhadap kontrak perusahaan</div>
       </div>
       <div class="ph-right">
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
-        </div>
         <span class="live"><span class="live-dot"></span>Live</span>
         <div class="ai-badge"><span class="ai-dot"></span><span data-id="Memindai…" data-en="Scanning…">Memindai…</span></div>
         <button class="btn btn-bl" data-id="🔔 Atur Notifikasi" data-en="🔔 Set Notifications" data-toast="Pengaturan notifikasi segera hadir">🔔 Atur Notifikasi</button>
@@ -25,7 +23,7 @@ export function render(container) {
       </div></div>
       <div class="card"><div class="cp">
         <div class="kpi-n kpi-re kpi-empty" style="font-size:38px">—</div>
-        <div class="kpi-lbl" data-id="Dampak Kritis" data-en="Critical Impact">Dampak Kritis</div>
+        <div class="kpi-lbl" data-id="Peringatan Kritis" data-en="Critical Alerts">Peringatan Kritis</div>
         <div class="kpi-badge kb-warn" data-id="Memindai…" data-en="Scanning…">Memindai…</div>
       </div></div>
       <div class="card"><div class="cp">
@@ -44,7 +42,7 @@ export function render(container) {
       <!-- MAIN TABLE -->
       <div class="card"><div class="cp" style="padding:0">
         <div style="padding:12px 16px;border-bottom:1px solid var(--bd-n);display:flex;align-items:center;justify-content:space-between;">
-          <div class="ch-title" data-id="Daftar Regulasi Terbaru" data-en="Latest Regulations List">Daftar Regulasi Terbaru</div>
+          <div class="ch-title" data-id="Pemantauan Regulasi Aktif" data-en="Active Regulatory Monitoring">Pemantauan Regulasi Aktif</div>
           <div style="display:flex;gap:6px">
             <select style="font-size:12px;border:1px solid var(--bd-n2);border-radius:var(--r-sm);padding:4px 8px;background:var(--surface2);color:var(--t2);outline:none">
               <option data-id="Semua Dampak" data-en="All Impact">Semua Dampak</option>
@@ -78,7 +76,7 @@ export function render(container) {
       <!-- TIMELINE PANEL -->
       <div style="display:flex;flex-direction:column;gap:10px">
         <div class="card"><div class="cp">
-          <div class="ch-title" style="margin-bottom:10px" data-id="Timeline Kepatuhan" data-en="Compliance Timeline">Timeline Kepatuhan</div>
+          <div class="ch-title" style="margin-bottom:10px" data-id="Jadwal Kepatuhan" data-en="Compliance Schedule">Jadwal Kepatuhan</div>
           <div style="text-align:center;padding:20px 0;color:var(--t4);font-size:12px" data-id="Timeline akan muncul setelah data regulasi tersedia." data-en="Timeline will appear once regulatory data is available.">Timeline akan muncul setelah data regulasi tersedia.</div>
         </div></div>
 

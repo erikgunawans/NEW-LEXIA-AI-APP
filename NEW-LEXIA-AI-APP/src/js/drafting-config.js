@@ -27,7 +27,7 @@ export const DOC_TYPE_FIELDS = {
   partnership: () => `
     <div class="fsec-lbl" data-id="Identitas Para Pihak" data-en="Party Identity">Identitas Para Pihak</div>
     <div class="fg"><label><span data-id="Pihak Pertama" data-en="First Party">Pihak Pertama</span> <span class="req">*</span></label>
-      <input type="text" data-placeholder-id="mis. PT PLN (Persero)" data-placeholder-en="e.g., PT PLN (Persero)" placeholder="mis. PT PLN (Persero)"/></div>
+      <input type="text" data-placeholder-id="mis. PT Nama Perusahaan" data-placeholder-en="e.g., PT Your Company" placeholder="mis. PT Nama Perusahaan"/></div>
     <div class="fg"><label><span data-id="Pihak Kedua" data-en="Second Party">Pihak Kedua</span> <span class="req">*</span></label>
       <input type="text" data-placeholder-id="mis. PT Mitra Teknologi Indonesia" data-placeholder-en="e.g., PT Mitra Teknologi Indonesia" placeholder="mis. PT Mitra Teknologi Indonesia"/></div>
     <div class="fsec-lbl" data-id="Durasi Perjanjian" data-en="Agreement Duration">Durasi Perjanjian</div>
@@ -91,7 +91,7 @@ export const DOC_TYPE_FIELDS = {
   sales: () => `
     <div class="fsec-lbl" data-id="Identitas Para Pihak" data-en="Party Identity">Identitas Para Pihak</div>
     <div class="fg"><label><span data-id="Pihak Pertama (Pembeli)" data-en="First Party (Buyer)">Pihak Pertama (Pembeli)</span> <span class="req">*</span></label>
-      <input type="text" data-placeholder-id="mis. Pembeli: PT PLN (Persero)" data-placeholder-en="e.g., Buyer: PT PLN (Persero)" placeholder="mis. Pembeli: PT PLN (Persero)"/></div>
+      <input type="text" data-placeholder-id="mis. Pembeli: PT Nama Perusahaan" data-placeholder-en="e.g., Buyer: PT Your Company" placeholder="mis. Pembeli: PT Nama Perusahaan"/></div>
     <div class="fg"><label><span data-id="Pihak Kedua (Penjual)" data-en="Second Party (Seller)">Pihak Kedua (Penjual)</span> <span class="req">*</span></label>
       <input type="text" data-placeholder-id="mis. Penjual: PT Supplier Nasional" data-placeholder-en="e.g., Seller: PT National Supplier" placeholder="mis. Penjual: PT Supplier Nasional"/></div>
     <div class="fsec-lbl" data-id="Durasi Kontrak" data-en="Contract Duration">Durasi Kontrak</div>
@@ -127,7 +127,7 @@ export const DOC_TYPE_FIELDS = {
   service: () => `
     <div class="fsec-lbl" data-id="Identitas Para Pihak" data-en="Party Identity">Identitas Para Pihak</div>
     <div class="fg"><label><span data-id="Pihak Pertama (Pemberi Kerja)" data-en="First Party (Employer)">Pihak Pertama (Pemberi Kerja)</span> <span class="req">*</span></label>
-      <input type="text" data-placeholder-id="mis. Pemberi Kerja: PT PLN (Persero)" data-placeholder-en="e.g., Employer: PT PLN (Persero)" placeholder="mis. Pemberi Kerja: PT PLN (Persero)"/></div>
+      <input type="text" data-placeholder-id="mis. Pemberi Kerja: PT Nama Perusahaan" data-placeholder-en="e.g., Employer: PT Your Company" placeholder="mis. Pemberi Kerja: PT Nama Perusahaan"/></div>
     <div class="fg"><label><span data-id="Pihak Kedua (Penyedia Jasa)" data-en="Second Party (Service Provider)">Pihak Kedua (Penyedia Jasa)</span> <span class="req">*</span></label>
       <input type="text" data-placeholder-id="mis. Penyedia: PT Jasa Konsultan Indonesia" data-placeholder-en="e.g., Provider: PT Indonesian Consulting Services" placeholder="mis. Penyedia: PT Jasa Konsultan Indonesia"/></div>
     <div class="fsec-lbl" data-id="Durasi Kontrak" data-en="Contract Duration">Durasi Kontrak</div>
@@ -166,7 +166,7 @@ export const DOC_TYPE_FIELDS = {
       <input type="text" data-placeholder-id="mis. Independent Contractor Agreement, MOU, Letter of Intent..." data-placeholder-en="e.g., Independent Contractor Agreement, MOU, Letter of Intent..." placeholder="mis. Independent Contractor Agreement, MOU, Letter of Intent..."/></div>
     <div class="fsec-lbl" data-id="Identitas Para Pihak" data-en="Party Identity">Identitas Para Pihak</div>
     <div class="fg"><label><span data-id="Pihak Pertama" data-en="First Party">Pihak Pertama</span> <span class="req">*</span></label>
-      <input type="text" data-placeholder-id="mis. PT PLN (Persero)" data-placeholder-en="e.g., PT PLN (Persero)" placeholder="mis. PT PLN (Persero)"/></div>
+      <input type="text" data-placeholder-id="mis. PT Nama Perusahaan" data-placeholder-en="e.g., PT Your Company" placeholder="mis. PT Nama Perusahaan"/></div>
     <div class="fg"><label><span data-id="Pihak Kedua" data-en="Second Party">Pihak Kedua</span> <span class="opt-lbl" data-id="(Opsional)" data-en="(Optional)">(Opsional)</span></label>
       <input type="text" data-placeholder-id="mis. PT Mitra Jasa Indonesia" data-placeholder-en="e.g., PT Mitra Jasa Indonesia" placeholder="mis. PT Mitra Jasa Indonesia"/></div>
     <div class="fsec-lbl" data-id="Durasi &amp; Tanggal" data-en="Duration &amp; Date">Durasi &amp; Tanggal</div>

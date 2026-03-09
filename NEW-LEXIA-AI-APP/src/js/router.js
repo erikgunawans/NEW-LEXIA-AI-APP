@@ -7,6 +7,8 @@
 
 import { renderSidebar } from "../components/Sidebar.js";
 import { renderChatBar, initChatBar } from "../components/ChatBar.js";
+import { renderAIFloat, initAIFloat } from "../components/AIFloat.js";
+import { requireAuth } from "./auth.js";
 
 /* ── Route table ─────────────────────────────────── */
 const routes = {
@@ -20,16 +22,6 @@ const routes = {
   "/matters": () => import("/src/pages/P8_Matters.js"),
   "/login": () => import("/src/pages/Login.js"),
 };
-
-/* ── Auth guard ──────────────────────────────────── */
-function requireAuth() {
-  const token = sessionStorage.getItem("lexia-auth");
-  if (!token) {
-    history.replaceState(null, "", "/login");
-    return false;
-  }
-  return true;
-}
 
 /* ── Global lang helper ──────────────────────────── */
 window.setLang = function setLang(lang) {
@@ -102,6 +94,9 @@ async function handleRoute() {
 
 function renderLogin(mod) {
   root.innerHTML = "";
+  // Remove AI float if navigating back to login from an app page
+  document.getElementById('aiFloatBtn')?.remove();
+  document.getElementById('aiFloatPanel')?.remove();
   const content = mod.default ? mod.default() : mod.render(root);
   if (content !== undefined) {
       if (typeof content === "string") {
@@ -158,6 +153,21 @@ function renderApp(mod, path) {
     initChatBar(mainWrap);
   }
 
+  // AI floating chat widget — rendered on all app pages (fixed to viewport via body)
+  const existingFloat = document.getElementById('aiFloatBtn');
+  if (existingFloat) existingFloat.remove();
+  const existingPanel = document.getElementById('aiFloatPanel');
+  if (existingPanel) existingPanel.remove();
+  if (mod.aiFloat !== false) {
+    const floatWrap = document.createElement('div');
+    floatWrap.innerHTML = renderAIFloat();
+    const floatBtn = floatWrap.children[0];    // live HTMLCollection: index 0 is button
+    document.body.appendChild(floatBtn);        // removes button from floatWrap; panel shifts to index 0
+    const floatPanel = floatWrap.children[0];  // now index 0 is panel
+    document.body.appendChild(floatPanel);
+    initAIFloat(path);
+  }
+
   // Page enter animation
   mainWrap.classList.add("page-enter");
 
@@ -175,30 +185,9 @@ function renderApp(mod, path) {
   initBentengToggle();
 }
 
-/* ── Card 3D tilt (mouse-tracking) ───────────────── */
-function initCardTilt(container) {
-  container.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      // Disable transform transition while mouse is inside so tilt tracks instantly
-      card.style.transitionProperty = 'box-shadow, border-color';
-    });
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const tiltX = ((cy - y) / cy) * 4;   // ±4 deg on X axis
-      const tiltY = ((x - cx) / cx) * 3;   // ±3 deg on Y axis
-      card.style.transform =
-        `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-5px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      // Re-enable spring transition for the return animation
-      card.style.transitionProperty = '';
-      card.style.transform = '';
-    });
-  });
+/* ── Card hover lift (simple translateY) ─────────── */
+function initCardTilt() {
+  // No-op: hover lift is handled entirely by CSS .card:hover { transform: translateY(-3px) }
 }
 
 function initBentengToggle() {

@@ -1,3 +1,4 @@
+export const chatBar = false;
 import { DOC_TYPE_CONFIG, DOC_TYPE_FIELDS } from '../js/drafting-config.js';
 
 /* ── Render ──────────────────────────────────────────────────────── */
@@ -7,10 +8,9 @@ export function render(container) {
     <div class="ph">
       <div>
         <div class="ph-title" data-id="Buat Dokumen &lt;em&gt;Hukum&lt;/em&gt;" data-en="Create &lt;em&gt;Legal&lt;/em&gt; Document">Buat Dokumen <em>Hukum</em></div>
-        <div class="ph-sub" data-id="Generate draft legal berbasis AI dengan referensi regulasi terverifikasi" data-en="AI-powered legal draft generation with verified regulatory references">Generate draft legal berbasis AI dengan referensi regulasi terverifikasi</div>
+        <div class="ph-sub" data-id="Hasilkan draft hukum presisi dengan referensi regulasi yang divalidasi" data-en="Generate precise legal drafts with validated regulatory references">Hasilkan draft hukum presisi dengan referensi regulasi yang divalidasi</div>
       </div>
       <div class="ph-right">
-        <div id="langToggle" style="display:inline-flex;background:rgba(25,103,210,.08);border:1px solid rgba(25,103,210,.18);border-radius:999px;padding:2px;gap:1px;flex-shrink:0"><div id="langID" style="padding:4px 12px;border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#1967D2,#1E7CE8);color:#fff;box-shadow:0 2px 6px rgba(25,103,210,.22);transition:all .15s" data-lang="id">🇮🇩 ID</div><div id="langEN" style="padding:4px 12px;border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;cursor:pointer;color:#8BA3BE;transition:all .15s" data-lang="en">🇺🇸 EN</div></div>
         <span class="badge b-am" data-id="Draft — Wajib Review Hukum" data-en="Draft — Legal Review Required">Draft — Wajib Review Hukum</span>
         <button class="btn btn-outline" id="btnInvite" style="font-size:12px;padding:5px 13px;gap:5px">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="12" height="12"><circle cx="6" cy="5" r="2.5"/><path d="M1 13c0-3 2-4.5 5-4.5s5 1.5 5 4.5"/><path d="M12 7v4M14 9h-4"/></svg>
@@ -52,16 +52,16 @@ export function render(container) {
           </div>
           <div class="fg">
             <label><span data-id="Dokumen Referensi" data-en="Reference Document">Dokumen Referensi</span> <span class="opt-lbl" data-id="(Opsional)" data-en="(Optional)">(Opsional)</span></label>
-            <div class="upload-zone" id="uploadZone">
-              <div class="upload-ico">☁</div>
+            <div class="upload-zone dz-compact" id="uploadZone">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="opacity:.7;margin-bottom:5px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <div class="upload-txt" data-id="Seret file atau <span class=&quot;upload-link&quot;>pilih dari komputer</span>" data-en="Drag file or <span class=&quot;upload-link&quot;>browse computer</span>">Seret file atau <span class="upload-link">pilih dari komputer</span></div>
               <div class="upload-spec" data-id="TXT, DOCX, PDF · Maks. 50MB" data-en="TXT, DOCX, PDF · Max. 50MB">TXT, DOCX, PDF · Maks. 50MB</div>
             </div>
           </div>
           <div class="fg">
             <label><span data-id="Template Dokumen" data-en="Document Template">Template Dokumen</span> <span class="opt-lbl" data-id="(Opsional)" data-en="(Optional)">(Opsional)</span></label>
-            <div class="upload-zone" id="uploadZoneTemplate">
-              <div class="upload-ico">☁</div>
+            <div class="upload-zone dz-compact" id="uploadZoneTemplate">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="opacity:.7;margin-bottom:5px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               <div class="upload-txt" data-id="Seret file atau <span class=&quot;upload-link&quot;>pilih dari komputer</span>" data-en="Drag file or <span class=&quot;upload-link&quot;>browse computer</span>">Seret file atau <span class="upload-link">pilih dari komputer</span></div>
               <div class="upload-spec" data-id="TXT, DOCX, PDF · Maks. 50MB" data-en="TXT, DOCX, PDF · Max. 50MB">TXT, DOCX, PDF · Maks. 50MB</div>
             </div>
@@ -80,7 +80,7 @@ export function render(container) {
       <div class="output-panel">
         <div class="output-hd">
           <div style="display:flex;align-items:center;gap:10px">
-            <div class="output-hd-title" data-id="Dokumen yang Dibuat" data-en="Generated Document">Dokumen yang Dibuat</div>
+            <div class="output-hd-title" data-id="Pratinjau Draft" data-en="Draft Preview">Pratinjau Draft</div>
             <div class="collab-presence" id="collabPresence" title="3 anggota aktif">
               <div class="collab-av" style="--av:#1967D2" title="Anda">AS</div>
               <div class="collab-av" style="--av:#0D7A4E" title="Ratih Handayani">RH</div>
@@ -106,12 +106,12 @@ export function render(container) {
         <div class="doc-canvas" id="docCanvas" style="display:none">
           <div class="doc-title-block">
             <div class="doc-title-main" id="docTitleMain">Perjanjian Kemitraan</div>
-            <div class="doc-title-num">Nomor: PKS/PLN/HKM/2026/012</div>
+            <div class="doc-title-num">Nomor: PKS/[Perusahaan]/HKM/2026/012</div>
             <div class="doc-title-date" data-id="Dibuat di Jakarta, 27 Februari 2026" data-en="Prepared in Jakarta, 27 February 2026">Dibuat di Jakarta, 27 Februari 2026</div>
           </div>
           <div class="doc-sec-hd">I. <span data-id="Para Pihak" data-en="The Parties">Para Pihak</span> <span class="doc-comment-chip" data-section="Para Pihak">💬 1</span></div>
           <div class="ai-block"><span class="ai-micro">✦ AI</span>
-            <div class="ai-text">Perjanjian ini dibuat antara <strong>PT PLN (Persero)</strong>, suatu BUMN yang didirikan berdasarkan hukum Indonesia, berkedudukan di Jakarta Selatan ("Pihak Pertama")<span class="cite-sup">[¹]</span>, dan <strong>PT Mitra Teknologi Indonesia</strong>, suatu perseroan terbatas, berkedudukan di Bandung ("Pihak Kedua")<span class="cite-sup">[²]</span>. Secara bersama-sama disebut sebagai "Para Pihak".</div>
+            <div class="ai-text">Perjanjian ini dibuat antara <strong>PT Nama Perusahaan</strong>, suatu badan usaha yang didirikan berdasarkan hukum Indonesia, berkedudukan di Indonesia ("Pihak Pertama")<span class="cite-sup">[¹]</span>, dan <strong>PT Mitra Teknologi Indonesia</strong>, suatu perseroan terbatas, berkedudukan di Bandung ("Pihak Kedua")<span class="cite-sup">[²]</span>. Secara bersama-sama disebut sebagai "Para Pihak".</div>
           </div>
           <div class="doc-sec-hd">II. <span data-id="Ruang Lingkup" data-en="Scope">Ruang Lingkup</span></div>
           <div class="ai-block"><span class="ai-micro">✦ AI</span>
@@ -127,11 +127,11 @@ export function render(container) {
           </div>
           <div class="cite-row">
             <span class="cite-lbl" data-id="Sumber:" data-en="Sources:">Sumber:</span>
-            <span class="cite-pill">[¹] PLN-Standard-PKS-2025</span>
+            <span class="cite-pill">[¹] Co-Standard-PKS-2025</span>
             <span class="cite-pill">[²] UU No.40/2007</span>
-            <span class="cite-pill">[³] PLN-TechSpec-Turbin</span>
+            <span class="cite-pill">[³] Co-TechSpec-Turbin</span>
             <span class="cite-pill">[⁴] UU No.30/2009</span>
-            <span class="cite-pill">[⁵] PLN-Finance-SOP</span>
+            <span class="cite-pill">[⁵] Co-Finance-SOP</span>
           </div>
           <div class="conf-row" style="margin-top:10px">
             <span class="conf-lbl" data-id="Kepercayaan AI:" data-en="AI Confidence:">Kepercayaan AI:</span>
@@ -212,7 +212,7 @@ export function render(container) {
                 <div class="cc-meta" data-id="Pasal III · 5 menit lalu" data-en="Article III · 5 minutes ago">Pasal III · 5 menit lalu</div>
               </div>
             </div>
-            <div class="cc-body" data-id="Ketentuan pembayaran 3 termin sudah sesuai SOP PLN-Finance. Nilai denda perlu di-cross check dengan Lampiran C." data-en="3-installment payment terms are in line with PLN-Finance SOP. Penalty amount needs cross-checking with Appendix C.">Ketentuan pembayaran 3 termin sudah sesuai SOP PLN-Finance. Nilai denda perlu di-cross check dengan Lampiran C.</div>
+            <div class="cc-body" data-id="Ketentuan pembayaran 3 termin sudah sesuai SOP Finance Perusahaan. Nilai denda perlu di-cross check dengan Lampiran C." data-en="3-installment payment terms are in line with Company Finance SOP. Penalty amount needs cross-checking with Appendix C.">Ketentuan pembayaran 3 termin sudah sesuai SOP Finance Perusahaan. Nilai denda perlu di-cross check dengan Lampiran C.</div>
             <div class="cc-actions">
               <button class="cc-btn cc-reply-btn" data-id="↩ Balas" data-en="↩ Reply" data-toast="Fitur balas komentar segera hadir">↩ Balas</button>
               <button class="cc-btn cc-resolve-btn" data-cid="comment2" data-id="✓ Selesai" data-en="✓ Done">✓ Selesai</button>
@@ -295,14 +295,37 @@ export function initInteractions(root) {
   if (btnShowOutput && emptyState && docCanvas) {
     btnShowOutput.addEventListener('click', () => {
       emptyState.style.display = 'none';
-      docCanvas.style.display = 'block';
-      docCanvas.style.opacity = '0';
-      docCanvas.style.transform = 'translateY(10px)';
-      requestAnimationFrame(() => {
-        docCanvas.style.transition = 'opacity .4s ease, transform .4s ease';
-        docCanvas.style.opacity = '1';
-        docCanvas.style.transform = 'translateY(0)';
-      });
+
+      // Show loading spinner
+      const outputPanel = docCanvas.parentElement;
+      const loader = document.createElement('div');
+      loader.className = 'draft-loading';
+      loader.innerHTML = `
+        <div class="loading-card">
+          <div class="loading-spinner"></div>
+          <div style="font-size:13px;color:var(--t3);font-weight:500"
+               data-id="Menyusun draft…" data-en="Generating draft…">Menyusun draft…</div>
+        </div>`;
+      outputPanel.appendChild(loader);
+      requestAnimationFrame(() => loader.classList.add('visible'));
+      if (typeof window.setLang === 'function') {
+        window.setLang(localStorage.getItem('lexia-lang') || 'id');
+      }
+
+      // After 1.5s, remove loader and reveal canvas
+      setTimeout(() => {
+        loader.classList.remove('visible');
+        setTimeout(() => loader.remove(), 300);
+
+        docCanvas.style.display = 'block';
+        docCanvas.style.opacity = '0';
+        docCanvas.style.transform = 'translateY(10px)';
+        requestAnimationFrame(() => {
+          docCanvas.style.transition = 'opacity .4s ease, transform .4s ease';
+          docCanvas.style.opacity = '1';
+          docCanvas.style.transform = 'translateY(0)';
+        });
+      }, 1500);
     });
   }
 

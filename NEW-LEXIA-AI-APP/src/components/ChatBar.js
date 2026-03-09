@@ -14,7 +14,8 @@ export function renderChatBar() {
       <input class="chat-input" type="text"
         data-placeholder-id="Tanya Lexia tentang regulasi, kepatuhan, opini hukum\u2026"
         data-placeholder-en="Ask Lexia about regulations, compliance, legal opinions\u2026"
-        placeholder="Tanya Lexia tentang regulasi, kepatuhan, opini hukum\u2026"/>
+        placeholder="Tanya Lexia tentang regulasi, kepatuhan, opini hukum\u2026"
+        maxlength="2000"/>
       <div class="chip-row">
         <span class="chip" data-id="\u2726 Buat Opini" data-en="\u2726 Create Opinion" data-navigate="/drafting">\u2726 Buat Opini</span>
         <span class="chip" data-id="\ud83d\udd0d Cari Preseden" data-en="\ud83d\udd0d Find Precedent" data-navigate="/research">\ud83d\udd0d Cari Preseden</span>

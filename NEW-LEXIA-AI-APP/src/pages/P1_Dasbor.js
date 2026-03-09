@@ -1,16 +1,14 @@
+export const chatBar = false;
+
 export function render(container) {
   container.innerHTML = `
   <div class="main-scroll">
     <div class="ph">
       <div>
-        <div class="ph-title" data-id="Dasbor <em>Utama</em>" data-en="Main <em>Dashboard</em>">Dasbor <em>Utama</em></div>
-        <div class="ph-sub" data-id="Kamis, 27 Februari 2026 · Divisi Hukum PLN" data-en="Thursday, 27 February 2026 · PLN Legal Division">Kamis, 27 Februari 2026 &nbsp;·&nbsp; Divisi Hukum PLN</div>
+        <div class="ph-title" data-id="Ikhtisar <em>Operasional</em>" data-en="Operational <em>Overview</em>">Ikhtisar <em>Operasional</em></div>
+        <div class="ph-sub" data-id="Kamis, 27 Februari 2026 · Divisi Hukum Perusahaan" data-en="Thursday, 27 February 2026 · Company Legal Division">Kamis, 27 Februari 2026 &nbsp;·&nbsp; Divisi Hukum Perusahaan</div>
       </div>
       <div class="ph-right">
-        <div class="lang-toggle">
-          <button class="lang-btn active" id="btnID" data-lang="id">🇮🇩 ID</button>
-          <button class="lang-btn" id="btnEN" data-lang="en">🇺🇸 EN</button>
-        </div>
         <button class="btn btn-outline" data-id="+ Perkara Baru" data-en="+ New Case" data-navigate="/matters">+ Perkara Baru</button>
         <button class="btn btn-outline" title="Ekspor Laporan" data-id="↗ Ekspor" data-en="↗ Export" data-toast="Mengunduh laporan dasbor…">↗ Ekspor</button>
       </div>
@@ -39,7 +37,7 @@ export function render(container) {
       <!-- KPI 3 -->
       <div class="b-k3 card"><div class="cp">
         <div class="kpi-n kpi-am">3</div>
-        <div class="kpi-lbl" data-id="Peringatan Aktif" data-en="Active Warnings">Peringatan Aktif</div>
+        <div class="kpi-lbl" data-id="Peringatan Kepatuhan" data-en="Compliance Alerts">Peringatan Kepatuhan</div>
         <div class="kpi-badge kb-warn" data-id="⚠ 2 batas waktu" data-en="⚠ 2 deadlines">⚠ 2 batas waktu</div>
         <svg class="spark" width="100%" height="26" viewBox="0 0 120 26" preserveAspectRatio="none">
           <polyline points="0,12 18,20 30,10 48,18 60,6 80,16 100,8 120,4" fill="none" stroke="rgba(201,112,0,.30)" stroke-width="2" stroke-linecap="round"/>
@@ -48,7 +46,7 @@ export function render(container) {
       <!-- KPI 4 -->
       <div class="b-k4 card"><div class="cp">
         <div class="kpi-n kpi-ink kpi-n-sm">2</div>
-        <div class="kpi-lbl" data-id="Update Regulasi" data-en="Regulation Updates">Update Regulasi</div>
+        <div class="kpi-lbl" data-id="Pembaruan Regulasi" data-en="Regulatory Updates">Pembaruan Regulasi</div>
         <div class="kpi-badge kb-warn" data-id="1 dampak tinggi" data-en="1 high impact">1 dampak tinggi</div>
         <svg class="spark" width="100%" height="26" viewBox="0 0 120 26" preserveAspectRatio="none">
           <polyline points="0,18 18,14 30,20 48,10 60,14 80,6 100,8 120,4" fill="none" stroke="rgba(2,120,190,.28)" stroke-width="2" stroke-linecap="round"/>
@@ -59,7 +57,7 @@ export function render(container) {
       <div class="b-radar card"><div class="cp">
         <div class="ch">
           <div><div class="ch-title" data-id="Radar Regulasi" data-en="Regulatory Radar">Radar Regulasi</div>
-               <div class="ch-sub" data-id="Pembaruan real-time dari sumber terpercaya" data-en="Real-time updates from trusted sources">Pembaruan real-time dari sumber terpercaya</div></div>
+               <div class="ch-sub" data-id="Intelijen regulasi dari 5 sumber data terverifikasi" data-en="Regulatory intelligence from 5 verified data sources">Intelijen regulasi dari 5 sumber data terverifikasi</div></div>
           <div class="dash-row-actions">
             <span class="live"><span class="live-dot"></span>Live</span>
             <a class="ch-link" data-id="Semua →" data-en="All →" data-navigate="/radar">Semua →</a>
@@ -67,7 +65,7 @@ export function render(container) {
         </div>
         <div class="row-item"><div class="reg-src bl">OJK</div>
           <div class="reg-body"><div class="reg-name" data-id="Peraturan OJK No.15/2026" data-en="OJK Regulation No.15/2026">Peraturan OJK No.15/2026</div>
-          <div class="reg-meta" data-id="20 Feb 2026 · 3 kontrak PLN terdampak" data-en="20 Feb 2026 · 3 PLN contracts affected">20 Feb 2026 · 3 kontrak PLN terdampak</div></div>
+          <div class="reg-meta" data-id="20 Feb 2026 · 3 kontrak perusahaan terdampak" data-en="20 Feb 2026 · 3 company contracts affected">20 Feb 2026 · 3 kontrak perusahaan terdampak</div></div>
           <span class="badge b-red" data-id="Kritis" data-en="Critical">Kritis</span></div>
         <div class="row-item"><div class="reg-src">KMH</div>
           <div class="reg-body"><div class="reg-name" data-id="Permenkumham No.3/2026" data-en="MoLHR Regulation No.3/2026">Permenkumham No.3/2026</div>
@@ -88,7 +86,7 @@ export function render(container) {
 
       <!-- QUICK ACTIONS -->
       <div class="b-qa card"><div class="cp">
-        <div class="ch"><div class="ch-title" data-id="Aksi Cepat" data-en="Quick Actions">Aksi Cepat</div></div>
+        <div class="ch"><div><div class="ch-title" data-id="Aksi Cepat" data-en="Quick Actions">Aksi Cepat</div><div class="ch-sub" data-id="Pintasan ke fitur yang paling sering digunakan" data-en="Shortcuts to your most-used features">Pintasan ke fitur yang paling sering digunakan</div></div></div>
         <div class="qa-grid">
           <div class="qa-tile hero" data-navigate="/drafting" role="button" tabindex="0"><span class="qa-ico">✦</span>
             <div class="qa-name" data-id="Buat Opini Legal" data-en="Create Legal Opinion">Buat Opini Legal</div>
@@ -107,7 +105,7 @@ export function render(container) {
 
       <!-- MATTERS -->
       <div class="b-matters card"><div class="cp">
-        <div class="ch"><div class="ch-title" data-id="Perkara Aktif" data-en="Active Cases">Perkara Aktif</div><a class="ch-link" data-id="Semua →" data-en="All →" data-navigate="/matters">Semua →</a></div>
+        <div class="ch"><div><div class="ch-title" data-id="Perkara Aktif" data-en="Active Cases">Perkara Aktif</div><div class="ch-sub" data-id="Memerlukan perhatian segera" data-en="Requiring immediate attention">Memerlukan perhatian segera</div></div><a class="ch-link" data-id="Semua →" data-en="All →" data-navigate="/matters">Semua →</a></div>
         <div class="row-item"><div class="m-bar m-bar-bl"></div>
           <div class="m-body"><div class="m-name">PKS/2025/047 — Turbin</div><div class="m-meta" data-id="Review · Ahmad S." data-en="Review · Ahmad S.">Review · Ahmad S.</div></div>
           <span class="badge b-am" data-id="Review" data-en="Review">Review</span></div>
@@ -121,7 +119,7 @@ export function render(container) {
 
       <!-- RECENT DOCS -->
       <div class="b-docs card"><div class="cp">
-        <div class="ch"><div class="ch-title" data-id="Dokumen Terkini" data-en="Recent Documents">Dokumen Terkini</div><a class="ch-link" data-id="Semua →" data-en="All →" data-navigate="/drafting">Semua →</a></div>
+        <div class="ch"><div><div class="ch-title" data-id="Dokumen Terkini" data-en="Recent Documents">Dokumen Terkini</div><div class="ch-sub" data-id="24 jam terakhir" data-en="Last 24 hours">24 jam terakhir</div></div><a class="ch-link" data-id="Semua →" data-en="All →" data-navigate="/drafting">Semua →</a></div>
         <div class="row-item"><div class="doc-ico">📄</div><span class="doc-name">PKS-Analisis-2026.pdf</span><span class="doc-age">2j</span></div>
         <div class="row-item"><div class="doc-ico">📝</div><span class="doc-name">Perjanjian-Pengadaan-003.docx</span><span class="doc-age">5j</span></div>
         <div class="row-item"><div class="doc-ico">📄</div><span class="doc-name">Delta-OJK-2026.pdf</span><span class="doc-age">1h</span></div>
@@ -130,13 +128,13 @@ export function render(container) {
 
       <!-- SOURCES -->
       <div class="b-sources card"><div class="cp">
-        <div class="ch"><div class="ch-title" data-id="Status Sumber" data-en="Source Status">Status Sumber</div>
+        <div class="ch"><div><div class="ch-title" data-id="Status Sumber" data-en="Source Status">Status Sumber</div><div class="ch-sub" data-id="Konektivitas basis data" data-en="Database connectivity">Konektivitas basis data</div></div>
           <span class="dash-source-count" data-id="5/5 aktif" data-en="5/5 active">5/5 aktif</span></div>
         <div class="row-item"><div class="src-pip sp-on"></div><span class="src-name">JDIH Nasional</span><span class="src-age">1j</span></div>
         <div class="row-item"><div class="src-pip sp-on"></div><span class="src-name">OJK Portal</span><span class="src-age">30m</span></div>
         <div class="row-item"><div class="src-pip sp-syn"></div><span class="src-name">SIPP Mahkamah Agung</span><span class="src-age">sync…</span></div>
         <div class="row-item"><div class="src-pip sp-on"></div><span class="src-name">Kemenkumham</span><span class="src-age">2j</span></div>
-        <div class="row-item"><div class="src-pip sp-on"></div><span class="src-name" data-id="Dok. Internal PLN" data-en="PLN Internal Docs">Dok. Internal PLN</span><span class="src-age">live</span></div>
+        <div class="row-item"><div class="src-pip sp-on"></div><span class="src-name" data-id="Dok. Internal Perusahaan" data-en="Company Internal Docs">Dok. Internal Perusahaan</span><span class="src-age">live</span></div>
         <div class="validator">
           <span class="dash-validator-ico">✅</span>
           <span class="val-txt" data-id="Validator Aktif" data-en="Validator Active">Validator Aktif</span>
